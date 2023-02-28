@@ -1,0 +1,58 @@
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/blueDark.css';
+@import '@radix-ui/colors/blueA.css';
+@import '@radix-ui/colors/blueDarkA.css';
+@import '@radix-ui/colors/gray.css';
+@import '@radix-ui/colors/grayDark.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--theme-font-family-base: Inter Tight, system-ui;
+		--theme-rounded-base: 9999px;
+		--theme-rounded-container: 24px;
+		--theme-border-base: 1px;
+
+		--color-primary-1: var(--blue1);
+		--color-primary-2: var(--blue2);
+		--color-primary-3: var(--blue3);
+		--color-primary-4: var(--blue4);
+		--color-primary-5: var(--blue5);
+		--color-primary-6: var(--blue6);
+		--color-primary-7: var(--blue7);
+		--color-primary-8: var(--blue8);
+		--color-primary-9: var(--blue9);
+		--color-primary-10: var(--blue10);
+		--color-primary-11: var(--blue11);
+		--color-primary-12: var(--blue12);
+
+		--color-primaryA-1: var(--blueA1);
+		--color-primaryA-2: var(--blueA2);
+		--color-primaryA-3: var(--blueA3);
+		--color-primaryA-4: var(--blueA4);
+		--color-primaryA-5: var(--blueA5);
+		--color-primaryA-6: var(--blueA6);
+		--color-primaryA-7: var(--blueA7);
+		--color-primaryA-8: var(--blueA8);
+		--color-primaryA-9: var(--blueA9);
+		--color-primaryA-10: var(--blueA10);
+		--color-primaryA-11: var(--blueA11);
+		--color-primaryA-12: var(--blueA12);
+
+		--color-surface-1: var(--gray1);
+		--color-surface-2: var(--gray2);
+		--color-surface-3: var(--gray3);
+		--color-surface-4: var(--gray4);
+		--color-surface-5: var(--gray5);
+		--color-surface-6: var(--gray6);
+		--color-surface-7: var(--gray7);
+		--color-surface-8: var(--gray8);
+		--color-surface-9: var(--gray9);
+		--color-surface-10: var(--gray10);
+		--color-surface-11: var(--gray11);
+		--color-surface-12: var(--gray12);
+	}
+}
