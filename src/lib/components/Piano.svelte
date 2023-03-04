@@ -40,7 +40,12 @@
 		};
 
 		dataChannel.onmessage = (event) => {
-			synth.triggerAttackRelease(event.data, '8n');
+			const message = JSON.parse(event.data);
+			synth.triggerAttackRelease(message.key, '8n');
+			console.log(message);
+			const endTimestamp = Date.now();
+			const latency = endTimestamp - message.timestamp;
+			console.log(`Latency: ${latency}ms`);
 		};
 
 		dataChannel.addEventListener('open', (event) => {
@@ -146,7 +151,8 @@
 
 	function keyClick(key: string) {
 		synth.triggerAttackRelease(key, '8n');
-		dataChannel.send(key);
+		const startTimestamp = Date.now();
+		dataChannel.send(JSON.stringify({ key, timestamp: startTimestamp }));
 	}
 
 	function handleToneStart() {
