@@ -39,6 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^9.17.1"
+		"firebase": "^9.17.1",
+		"tone": "^14.8.49"
 	}
 }
