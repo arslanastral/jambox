@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { db } from '$lib/utils/firebase';
+	import * as Tone from 'tone';
+
 	import {
 		collection,
 		addDoc,
@@ -38,7 +40,7 @@
 		};
 
 		dataChannel.onmessage = (event) => {
-			console.log('Got Data Channel Message:', event.data);
+			synth.triggerAttackRelease(event.data, '8n');
 		};
 
 		dataChannel.addEventListener('open', (event) => {
@@ -140,29 +142,37 @@
 		}
 	});
 
-	function keyClick() {
-		dataChannel.send('Click...');
+	const synth = new Tone.Synth().toDestination();
+
+	function keyClick(key: string) {
+		synth.triggerAttackRelease(key, '8n');
+		dataChannel.send(key);
+	}
+
+	function handleToneStart() {
+		Tone.start();
 	}
 </script>
 
 <div
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-center p-4"
 >
+	<button on:click={handleToneStart}>Allow Sound</button>
 	<div class=" h-[500px] rounded-container-token grid-rows-2 grid bg-primary-9">
 		<div class="bg-primary-12 rounded-tl-container-token rounded-tr-container-token" />
 		<div class="flex px-4">
-			<button on:click={keyClick} class={whiteKeyClasses} />
-			<button on:click={keyClick} class={blackKeyClasses} />
-			<button on:click={keyClick} class={whiteKeyClasses} />
-			<button on:click={keyClick} class={blackKeyClasses} />
-			<button on:click={keyClick} class={whiteKeyClasses} />
-			<button on:click={keyClick} class={whiteKeyClasses} />
-			<button on:click={keyClick} class={blackKeyClasses} />
-			<button on:click={keyClick} class={whiteKeyClasses} />
-			<button on:click={keyClick} class={blackKeyClasses} />
-			<button on:click={keyClick} class={whiteKeyClasses} />
-			<button on:click={keyClick} class={blackKeyClasses} />
-			<button on:click={keyClick} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('C4')} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('C#4')} class={blackKeyClasses} />
+			<button on:click={() => keyClick('D4')} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('D#4')} class={blackKeyClasses} />
+			<button on:click={() => keyClick('E4')} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('F4')} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('F#4')} class={blackKeyClasses} />
+			<button on:click={() => keyClick('G4')} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('G#4')} class={blackKeyClasses} />
+			<button on:click={() => keyClick('A4')} class={whiteKeyClasses} />
+			<button on:click={() => keyClick('A#4')} class={blackKeyClasses} />
+			<button on:click={() => keyClick('B4')} class={whiteKeyClasses} />
 		</div>
 	</div>
 </div>
