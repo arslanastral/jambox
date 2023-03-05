@@ -39,7 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^9.17.1",
+		"p2pcf": "^1.3.13",
 		"tone": "^14.8.49"
 	}
 }
