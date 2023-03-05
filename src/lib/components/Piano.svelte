@@ -12,10 +12,9 @@
 	const room_id = 'MyRoom';
 
 	let peerid = '';
-	let audioContext = false;
+	let hasAudioPermission = false;
 
 	const p2pcf = new P2PCF(client_id, room_id, {
-		// Worker URL (optional) - if left out, will use a public worker
 		workerUrl: 'https://peers.pianojam.workers.dev/'
 	});
 
@@ -37,10 +36,13 @@
 			const decoder = new TextDecoder();
 			const jsonString = decoder.decode(data);
 			const obj = JSON.parse(jsonString);
-			synth.triggerAttackRelease(obj.key, '4n');
 			const endTimestamp = Date.now();
 			const latency = endTimestamp - obj.timestamp;
-			console.log(`Note: ${obj.key} , Latency: ${latency}ms`);
+			synth.triggerAttackRelease(obj.key, '4n', latency);
+
+			const toneTime = Tone.now();
+
+			console.log(`Note: ${obj.key} , Latency: ${latency}ms ,Tone.Now(): ${toneTime}`);
 		});
 	});
 
@@ -58,14 +60,14 @@
 
 	function handleToneStart() {
 		Tone.start();
-		audioContext = true;
+		hasAudioPermission = true;
 	}
 </script>
 
 <div
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-center p-4"
 >
-	{#if audioContext}
+	{#if !hasAudioPermission}
 		<button on:click={handleToneStart}>Allow Sound</button>
 	{/if}
 
