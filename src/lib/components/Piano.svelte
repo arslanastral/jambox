@@ -1,5 +1,5 @@
 <script lang="ts">
-	import P2PCF from 'p2pcf';
+	import { joinRoom } from 'trystero';
 	import * as Tone from 'tone';
 
 	import { onMount } from 'svelte';
@@ -8,57 +8,43 @@
 		'bg-primary-1 border-b-4 border-r border-primary-5 rounded-b h-[calc(100%+4px)] w-11 hover:bg-primary-4 active:bg-primary-5 transition-colors duration-300 ease-in-out';
 	const blackKeyClasses = 'bg-primary-12 h-40 w-6 rounded-b -ml-3 -mr-3 z-10';
 
-	const client_id = 'MyUsername';
-	const room_id = 'MyRoom';
-
 	let peerid = '';
 	let hasAudioPermission = false;
 
-	const p2pcf = new P2PCF(client_id, room_id, {
-		workerUrl: 'https://peers.pianojam.workers.dev/'
-	});
+	const config = { appId: 'pianojam-xcvddfg3434323faf' };
+	const room = joinRoom(config, 'pianojam_room-sdfasdfasf878');
+
+	const [playNote, getNote] = room.makeAction('notes');
 
 	onMount(async () => {
-		p2pcf.start();
-
-		p2pcf.on('peerconnect', (peer) => {
-			peerid = peer.id;
-			console.log('New peer:', peer.id, peer.client_id);
+		room.onPeerJoin((peerId) => {
+			peerid = peerId;
+			console.log(`${peerId} joined`);
 		});
 
-		p2pcf.on('peerclose', (peer) => {
-			console.log('peer closed');
+		room.onPeerLeave((peerId) => {
 			peerid = '';
-			// Peer has disconnected
+			console.log(`${peerId} joined`);
+			console.log(`${peerId} left`);
 		});
 
-		p2pcf.on('msg', (peer, data) => {
-			const decoder = new TextDecoder();
-			const jsonString = decoder.decode(data);
-			const obj = JSON.parse(jsonString);
+		getNote((data, peerId) => {
 			const endTimestamp = Date.now();
-			const latency = endTimestamp - obj.timestamp;
-			synth.triggerAttackRelease(obj.key, '4n', latency);
-
-			const toneTime = Tone.now();
-
-			console.log(`Note: ${obj.key} , Latency: ${latency}ms ,Tone.Now(): ${toneTime}`);
+			const latency = endTimestamp - data.timestamp;
+			synth.triggerAttackRelease(data.note, '4n');
+			console.log(`Note: ${data.note} , Latency: ${latency}ms`);
 		});
 	});
 
 	const synth = new Tone.Synth().toDestination();
 
-	function keyClick(key: string) {
-		synth.triggerAttackRelease(key, '4n');
+	function keyClick(note: string) {
+		synth.triggerAttackRelease(note, '4n');
 		const startTimestamp = Date.now();
-		const obj = { key, timestamp: startTimestamp };
-		const encoder = new TextEncoder();
-		const arrayBuffer = encoder.encode(JSON.stringify(obj)).buffer;
-
-		p2pcf.broadcast(arrayBuffer);
+		playNote({ note, timestamp: startTimestamp });
 	}
 
-	function handleToneStart() {
+	function handleAudioPermissions() {
 		Tone.start();
 		hasAudioPermission = true;
 	}
@@ -68,7 +54,7 @@
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-center p-4"
 >
 	{#if !hasAudioPermission}
-		<button on:click={handleToneStart}>Allow Sound</button>
+		<button on:click={handleAudioPermissions}>Allow Sound</button>
 	{/if}
 
 	{#if !peerid}

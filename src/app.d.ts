@@ -10,5 +10,3 @@ declare global {
 }
 
 export {};
-
-declare module 'p2pcf';

@@ -39,7 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"p2pcf": "^1.3.13",
-		"tone": "^14.8.49"
+		"tone": "^14.8.49",
+		"trystero": "^0.11.8"
 	}
 }
