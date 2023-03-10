@@ -39,6 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"svelte-headlessui": "^0.0.15",
 		"tone": "^14.8.49",
 		"trystero": "^0.11.8"
 	}
