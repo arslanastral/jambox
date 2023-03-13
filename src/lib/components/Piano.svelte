@@ -1,20 +1,15 @@
 <script lang="ts">
 	import { joinRoom } from 'trystero';
 	import { start } from 'tone';
-
 	import { onMount } from 'svelte';
 	import { allInstruments } from '$lib/stores/tonejs/instruments';
-
-	const whiteKeyClasses =
-		'bg-primary-1 flex justify-center items-end border-b-4 border-r border-primary-5 rounded-b h-[calc(100%+4px)] w-11 hover:bg-primary-4 active:bg-primary-5 transition-colors duration-300 ease-in-out';
-	const blackKeyClasses =
-		'bg-primary-12 flex justify-center items-end text-primary-1 text-xs  h-40 w-6 rounded-b -ml-3 -mr-3 z-10';
+	import PianoKey from './PianoKey.svelte';
 
 	let peerCount = 0;
 	let hasAudioPermission = false;
 
-	const config = { appId: 'pianojam-xcvddfg3434323faf' };
-	const room = joinRoom(config, 'pianojam_room-sdfasdfasf878');
+	const config = { appId: 'pianojam-xcvd' };
+	const room = joinRoom(config, 'pianojam_room-sdf');
 
 	const peerNames = {};
 
@@ -52,6 +47,7 @@
 	});
 
 	const instrument = $allInstruments.piano;
+	instrument.release = 80;
 
 	function keyClick(note: string, type: string) {
 		type === 'down' ? instrument.triggerAttack(note) : instrument.triggerRelease(note);
@@ -65,7 +61,74 @@
 	}
 
 	let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-	let octaves = ['1', '2', '3'];
+	let octave = ['3', '4', '5'];
+
+	$: KEYMAP = {
+		[`C${octave[0]}`]: 'q',
+		[`C#${octave[0]}`]: '2',
+		[`D${octave[0]}`]: 'w',
+		[`D#${octave[0]}`]: '3',
+		[`E${octave[0]}`]: 'e',
+		[`F${octave[0]}`]: 'r',
+		[`F#${octave[0]}`]: '5',
+		[`G${octave[0]}`]: 't',
+		[`G#${octave[0]}`]: '6',
+		[`A${octave[0]}`]: 'y',
+		[`A#${octave[0]}`]: '7',
+		[`B${octave[0]}`]: 'u',
+		[`C${octave[1]}`]: 'i',
+		[`C#${octave[1]}`]: '9',
+		[`D${octave[1]}`]: 'o',
+		[`D#${octave[1]}`]: '0',
+		[`E${octave[1]}`]: 'p',
+		[`F${octave[1]}`]: 'z',
+		[`F#${octave[1]}`]: 's',
+		[`G${octave[1]}`]: 'x',
+		[`G#${octave[1]}`]: 'd',
+		[`A${octave[1]}`]: 'c',
+		[`A#${octave[1]}`]: 'f',
+		[`B${octave[1]}`]: 'v',
+		[`C${octave[2]}`]: 'b',
+		[`C#${octave[2]}`]: 'h',
+		[`D${octave[2]}`]: 'n',
+		[`D#${octave[2]}`]: 'j',
+		[`E${octave[2]}`]: 'm',
+		[`F${octave[2]}`]: ',',
+		[`F#${octave[2]}`]: 'l',
+		[`G${octave[2]}`]: '.',
+		[`G#${octave[2]}`]: ';',
+		[`A${octave[2]}`]: 'a',
+		[`A#${octave[2]}`]: '4',
+		[`B${octave[2]}`]: 'k'
+	};
+
+	function increment() {
+		console.log('Increment', octave);
+		if (octave.toString() === '5,6,7') {
+			return;
+		}
+		octave = octave.map((num) => {
+			const incremented = Number(num) + 1;
+			return incremented > 7 ? '7' : incremented.toString();
+		});
+	}
+
+	function decrement() {
+		console.log('Decrement', octave);
+		if (octave.toString() === '0,1,2') {
+			return;
+		}
+		octave = octave.map((num) => {
+			const decremented = Number(num) - 1;
+			return decremented < 0 ? '0' : decremented.toString();
+		});
+	}
+
+	function handleKeyPress(e: KeyboardEvent, note: string, type: string) {
+		if (!e.repeat && KEYMAP[note] === e.key) {
+			keyClick(note, type);
+		}
+	}
 </script>
 
 <div
@@ -74,26 +137,18 @@
 	{#if !hasAudioPermission}
 		<button on:click={handleAudioPermissions}>Allow Sound</button>
 	{/if}
-
+	<button on:click={increment}>Increase Octave</button>
+	<button on:click={decrement}>Decrese Octave</button>
 	{#if !peerCount}
 		Finding Peers...
 	{/if}
-	<div class=" h-[500px] rounded-container-token grid-rows-2 grid bg-primary-9">
+
+	<div class="h-[500px] rounded-container-token grid-rows-2 grid bg-primary-9">
 		<div class="bg-primary-12 rounded-tl-container-token rounded-tr-container-token" />
 		<div class="flex px-4">
-			{#each octaves as octave}
+			{#each octave as octave}
 				{#each notes as note}
-					<button
-						on:mousedown={() => keyClick(note + octave, 'down')}
-						on:mouseup={() => keyClick(note + octave, 'up')}
-						on:mouseenter={(e) => {
-							if (e.buttons == 1 || e.buttons == 3) keyClick(note + octave, 'down');
-						}}
-						on:mouseleave={() => keyClick(note + octave, 'up')}
-						class={note.includes('#') ? blackKeyClasses : whiteKeyClasses}
-					>
-						{note + octave}</button
-					>
+					<PianoKey {handleKeyPress} {keyClick} note={note + octave} />
 				{/each}
 			{/each}
 		</div>
