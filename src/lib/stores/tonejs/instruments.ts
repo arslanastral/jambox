@@ -1,5 +1,5 @@
 import { Sampler } from 'tone';
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { PUBLIC_SAMPLES_URL } from '$env/static/public';
 import { instrumentConfig } from './instrumentsConfig';
 
@@ -20,7 +20,7 @@ type SamplerInstrumentsOptions<T extends string> = {
 type SamplerInstruments<T extends string> = Record<T, Sampler>;
 
 type InstrumentName = (typeof instrumentConfig)[number]['name'];
-export const currentInstrument = writable<InstrumentName>('bass-electric');
+export const currentInstrument = writable<InstrumentName>(instrumentConfig[0].name);
 
 function createInstruments<T extends string>(options: SamplerInstrumentsOptions<T>) {
 	const { subscribe, set, update } = writable<SamplerInstruments<T>>({} as SamplerInstruments<T>);
@@ -70,7 +70,19 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 					samplerInstruments[instrumentConfig.name] = createSampler(instrumentConfig);
 				}
 			}
-			return set(samplerInstruments);
+			set(samplerInstruments);
+		},
+		add: (instrumentName?: InstrumentName) => {
+			const instrumentConfig = options.instrumentsConfig.find((i) => i.name === instrumentName);
+
+			if (instrumentConfig) {
+				update((i) => {
+					if (!(instrumentConfig?.name in i)) {
+						i[instrumentConfig.name] = createSampler(instrumentConfig);
+					}
+					return i;
+				});
+			}
 		}
 	};
 }
@@ -81,4 +93,4 @@ export const allInstruments = createInstruments({
 	instrumentsConfig: instrumentConfig
 });
 
-allInstruments.load(['bass-electric', 'piano', 'harp']);
+allInstruments.load(['piano']);

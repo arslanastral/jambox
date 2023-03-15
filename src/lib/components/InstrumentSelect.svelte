@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { currentInstrument } from '$lib/stores/tonejs/instruments';
+	import { currentInstrument, allInstruments } from '$lib/stores/tonejs/instruments';
 	import { instrumentConfig } from '$lib/stores/tonejs/instrumentsConfig';
 	import { Svroller } from 'svrollbar';
 	import { createListbox } from 'svelte-headlessui';
 	import { scale } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 
-	const instruments = instrumentConfig.map((i) => ({ name: i.name }));
+	const instruments = instrumentConfig
+		.map((i) => ({ name: i.name }))
+		.sort((a, b) => (a.name in $allInstruments ? -1 : 1));
 
 	const listbox = createListbox({
 		label: 'Actions',
@@ -14,7 +16,13 @@
 	});
 
 	function onSelect(e: Event) {
-		$currentInstrument = (e as CustomEvent).detail.selected.name;
+		let instrumentName = (e as CustomEvent).detail.selected.name;
+		if (instrumentName in $allInstruments) {
+			$currentInstrument = instrumentName;
+		} else {
+			allInstruments.add(instrumentName);
+			$currentInstrument = instrumentName;
+		}
 	}
 </script>
 
@@ -43,18 +51,25 @@
 						{@const active = $listbox.active === value}
 						{@const selected = $listbox.selected === value}
 						<li
-							class="relative justify-start mr-3 flex cursor-default rounded-full select-none p-2 {active
+							class="relative justify-between items-center mr-3 flex cursor-default rounded-full select-none p-2 {active
 								? 'bg-primary-3'
 								: 'text-gray-900'}"
 							use:listbox.item={{ value }}
 						>
-							{#if selected}
-								<span class="material-symbols-rounded px-2 text-primary"> piano </span>
-							{:else}
-								<span class="material-symbols-rounded px-2 text-primary"> music_note </span>
-							{/if}
+							<div class="flex justify-start items-center">
+								{#if selected}
+									<span class="material-symbols-rounded px-2 text-primary"> piano </span>
+								{:else}
+									<span class="material-symbols-rounded px-2 text-primary"> music_note </span>
+								{/if}
 
-							<span class="truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span>
+								<span class="truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span
+								>
+							</div>
+
+							{#if !(value.name in $allInstruments)}
+								<span class="material-symbols-rounded text-primary"> download </span>
+							{/if}
 						</li>
 					{/each}
 				</Svroller>
