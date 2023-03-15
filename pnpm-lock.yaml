@@ -19,6 +19,7 @@ specifiers:
   svelte: ^3.54.0
   svelte-check: ^3.0.1
   svelte-headlessui: ^0.0.15
+  svrollbar: ^0.12.0
   tailwindcss: ^3.2.7
   tone: ^14.8.49
   trystero: ^0.11.8
@@ -29,6 +30,7 @@ specifiers:
 
 dependencies:
   svelte-headlessui: 0.0.15
+  svrollbar: 0.12.0
   tone: 14.8.49
   trystero: 0.11.8_eslint@8.35.0
 
@@ -5540,6 +5542,10 @@ packages:
     resolution: {integrity: sha512-S+87/P0Ve67HxKkEV23iCdAh/SX1xiSfjF1HOglno/YTbSTW7RniICMCofWGdJJbdjw3S+0PfFb1JtGfTXE0oQ==}
     engines: {node: '>= 8'}
     dev: true
+
+  /svrollbar/0.12.0:
+    resolution: {integrity: sha512-okH0sz8bGtw+tgOfN1mpEtbveifxROcE3mbUMBJ1RQz8Q+1rVr+nVG7EAJ9b0G80cGDu7dskjAWuzj3iru0k5g==}
+    dev: false
 
   /tailwindcss/3.2.7_postcss@8.4.21:
     resolution: {integrity: sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==}
