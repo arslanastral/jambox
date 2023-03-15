@@ -49,6 +49,10 @@
 
 	$: instrument = $allInstruments[$currentInstrument];
 
+	function setRelease() {
+		instrument.release = 80;
+	}
+
 	function keyClick(note: string, type: string) {
 		type === 'down' ? instrument.triggerAttack(note) : instrument.triggerRelease(note);
 		const startTimestamp = Date.now();
@@ -139,6 +143,7 @@
 	{/if}
 	<button on:click={increment}>Increase Octave</button>
 	<button on:click={decrement}>Decrese Octave</button>
+	<button on:click={setRelease}>Set Release</button>
 	{#if !peerCount}
 		Finding Peers...
 	{/if}
