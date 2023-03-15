@@ -2,8 +2,9 @@
 	import { joinRoom } from 'trystero';
 	import { start } from 'tone';
 	import { onMount } from 'svelte';
-	import { allInstruments } from '$lib/stores/tonejs/instruments';
+	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
+	import InstrumentSelect from './InstrumentSelect.svelte';
 
 	let peerCount = 0;
 	let hasAudioPermission = false;
@@ -46,8 +47,7 @@
 		getName((name, peerId) => (peerNames[peerId] = name));
 	});
 
-	const instrument = $allInstruments.piano;
-	instrument.release = 80;
+	$: instrument = $allInstruments[$currentInstrument];
 
 	function keyClick(note: string, type: string) {
 		type === 'down' ? instrument.triggerAttack(note) : instrument.triggerRelease(note);
@@ -144,7 +144,9 @@
 	{/if}
 
 	<div class="h-[500px] rounded-container-token grid-rows-2 grid bg-primary-9">
-		<div class="bg-primary-12 rounded-tl-container-token rounded-tr-container-token" />
+		<div class="bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4">
+			<InstrumentSelect />
+		</div>
 		<div class="flex px-4">
 			{#each octave as octave}
 				{#each notes as note}
