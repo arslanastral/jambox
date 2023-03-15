@@ -20,7 +20,9 @@
 	on:mouseenter={(e) => {
 		if (e.buttons == 1 || e.buttons == 3) keyClick(note, 'down');
 	}}
-	on:mouseleave={() => keyClick(note, 'up')}
+	on:mouseleave={(e) => {
+		if (e.buttons == 1 || e.buttons == 3) keyClick(note, 'up');
+	}}
 	class={note.includes('#') ? blackKeyClasses : whiteKeyClasses}
 >
 	{note}</button
