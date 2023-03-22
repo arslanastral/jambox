@@ -45,7 +45,7 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 
 		return new Sampler({
 			urls: Object.keys(minifiedUrls).length ? minifiedUrls : urls,
-			baseUrl: baseUrlAll + name + '/' ?? baseUrl + name + '/',
+			baseUrl: baseUrl ?? baseUrlAll + name + '/',
 			onload: () => {
 				console.log(`${name} Loaded`);
 
