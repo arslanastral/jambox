@@ -93,4 +93,4 @@ export const allInstruments = createInstruments({
 	instrumentsConfig: instrumentConfig
 });
 
-allInstruments.load(['piano']);
+allInstruments.load(['grand-piano']);
