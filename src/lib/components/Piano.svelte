@@ -50,7 +50,7 @@
 	$: instrument = $allInstruments[$currentInstrument];
 
 	function setRelease() {
-		instrument.release = 80;
+		instrument.release = 50;
 	}
 
 	function keyClick(note: string, type: string) {
@@ -148,16 +148,18 @@
 		Finding Peers...
 	{/if}
 
-	<div class="h-[500px] rounded-container-token grid-rows-2 grid bg-primary-9">
+	<div class="rounded-container-token  grid-rows-1 grid bg-primary-9">
 		<div class="bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4">
 			<InstrumentSelect />
 		</div>
-		<div class="flex px-4">
-			{#each octave as octave}
-				{#each notes as note}
-					<PianoKey {handleKeyPress} {keyClick} note={note + octave} />
+		<div class="h-[300px] lg:h-[270px] overflow-x-auto md:px-5 w-full">
+			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-none">
+				{#each octave as octave}
+					{#each notes as note}
+						<PianoKey {handleKeyPress} {keyClick} note={note + octave} />
+					{/each}
 				{/each}
-			{/each}
+			</div>
 		</div>
 	</div>
 </div>
