@@ -5,6 +5,7 @@
 	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
+	import Nexus from 'nexusui';
 
 	let peerCount = 0;
 	let hasAudioPermission = false;
@@ -16,6 +17,23 @@
 
 	const [playNote, getNote] = room.makeAction('notes');
 	const [setName, getName] = room.makeAction('name');
+
+	function dialRef(node: HTMLElement) {
+		setRelease();
+		const dial = new Nexus.Dial(node, {
+			size: [60, 60],
+			min: 1,
+			max: 100,
+			value: 50
+		});
+
+		dial.colorize('accent', '#ff0');
+		dial.colorize('fill', '#333');
+
+		dial.on('change', (value: number) => {
+			setRelease(value);
+		});
+	}
 
 	onMount(async () => {
 		setName('some-player');
@@ -49,8 +67,8 @@
 
 	$: instrument = $allInstruments[$currentInstrument];
 
-	function setRelease() {
-		instrument.release = 50;
+	function setRelease(value = 50) {
+		instrument.release = value;
 	}
 
 	function keyClick(note: string, type: string) {
@@ -151,7 +169,7 @@
 	{#if !hasAudioPermission}
 		<button on:click={handleAudioPermissions}>Allow Sound</button>
 	{/if}
-	<button on:click={setRelease}>Set Release</button>
+
 	{#if !peerCount}
 		Finding Peers...
 	{/if}
@@ -161,6 +179,10 @@
 			class="flex items-center justify-between bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4"
 		>
 			<InstrumentSelect />
+			<div class="flex flex-col items-center gap-1">
+				<div use:dialRef />
+			</div>
+
 			<div class="flex flex-col items-start gap-1">
 				<div class="text-sm font-light">Octave</div>
 				<div class="flex items-center justify-center gap-2">
