@@ -30,21 +30,20 @@
 	<button
 		use:listbox.button
 		on:select={onSelect}
-		class="relative w-full cursor-default rounded-full bg-primary-1 py-2 pl-4 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+		class="relative w-full flex items-center justify-between cursor-pointer rounded-full bg-primary-1 px-4 py-2 shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
 	>
-		<span class="block truncate">{$listbox.selected.name}</span>
-		<span
-			class="pointer-events-none material-symbols-rounded  absolute inset-y-0 right-0 flex items-center pr-3"
-		>
-			piano
-		</span>
+		<div class="flex items-center gap-2">
+			<span class="pointer-events-none material-symbols-rounded"> piano </span>
+			<span class="block truncate">{$listbox.selected.name}</span>
+		</div>
+		<span class="pointer-events-none material-symbols-rounded"> expand_more </span>
 	</button>
 
 	{#if $listbox.expanded}
 		<div transition:scale={{ duration: 250, easing: cubicInOut }}>
 			<ul
 				use:listbox.items
-				class="absolute mt-1 h-64 px-2 pr-0 w-full rounded-lg bg-surface-1 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+				class="absolute mt-1 h-64 px-1 pr-0 w-full rounded-lg bg-surface-1 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
 			>
 				<Svroller alwaysVisible={true} height="100%" width="100%" margin={{ left: 20 }}>
 					{#each instruments as value, i}
@@ -58,9 +57,9 @@
 						>
 							<div class="flex justify-start items-center">
 								{#if selected}
-									<span class="material-symbols-rounded px-2 text-primary"> piano </span>
+									<span class="material-symbols-rounded px-1 text-primary"> piano </span>
 								{:else}
-									<span class="material-symbols-rounded px-2 text-primary"> music_note </span>
+									<span class="material-symbols-rounded px-1 text-primary"> music_note </span>
 								{/if}
 
 								<span class="truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span
