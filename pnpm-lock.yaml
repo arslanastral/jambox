@@ -13,6 +13,7 @@ specifiers:
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
+  nexusui: ^2.1.6
   postcss: ^8.4.21
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
@@ -29,6 +30,7 @@ specifiers:
   vitest: ^0.25.3
 
 dependencies:
+  nexusui: 2.1.6
   svelte-headlessui: 0.0.15
   svrollbar: 0.12.0
   tone: 14.8.49
@@ -4483,6 +4485,10 @@ packages:
   /netmask/2.0.2:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /nexusui/2.1.6:
+    resolution: {integrity: sha512-tAtYZE82R8wvOp1GeW59TWCjSZksI5OVr+yS7tvF0LXOQnWkQW/WWCa7nqPeVXU7m1L3YjS+w76SnglpGOjA3w==}
     dev: false
 
   /noble-ed25519/1.2.6:

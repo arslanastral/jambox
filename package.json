@@ -39,6 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"nexusui": "^2.1.6",
 		"svelte-headlessui": "^0.0.15",
 		"svrollbar": "^0.12.0",
 		"tone": "^14.8.49",
