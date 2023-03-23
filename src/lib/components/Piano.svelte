@@ -106,8 +106,7 @@
 		[`B${octave[2]}`]: 'k'
 	};
 
-	function increment() {
-		console.log('Increment', octave);
+	function incrementOctave() {
 		if (octave.toString() === '5,6,7') {
 			return;
 		}
@@ -117,8 +116,7 @@
 		});
 	}
 
-	function decrement() {
-		console.log('Decrement', octave);
+	function decrementOctave() {
 		if (octave.toString() === '0,1,2') {
 			return;
 		}
@@ -135,22 +133,45 @@
 	}
 </script>
 
+<svelte:window
+	on:keypress={(e) => {
+		if (!e.repeat && e.key === '-') {
+			decrementOctave();
+		}
+
+		if (!e.repeat && e.key === '=') {
+			incrementOctave();
+		}
+	}}
+/>
+
 <div
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-center p-4"
 >
 	{#if !hasAudioPermission}
 		<button on:click={handleAudioPermissions}>Allow Sound</button>
 	{/if}
-	<button on:click={increment}>Increase Octave</button>
-	<button on:click={decrement}>Decrese Octave</button>
 	<button on:click={setRelease}>Set Release</button>
 	{#if !peerCount}
 		Finding Peers...
 	{/if}
 
 	<div class="rounded-container-token  grid-rows-1 grid bg-primary-9">
-		<div class="bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4">
+		<div
+			class="flex items-center justify-between bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4"
+		>
 			<InstrumentSelect />
+			<div class="flex flex-col items-start gap-1">
+				<div class="text-sm font-light">Octave</div>
+				<div class="flex items-center justify-center gap-2">
+					<button class="material-symbols-rounded" on:click={decrementOctave}
+						>do_not_disturb_on</button
+					>
+
+					<span> {octave[0]} </span>
+					<button class="material-symbols-rounded" on:click={incrementOctave}>add_circle</button>
+				</div>
+			</div>
 		</div>
 		<div class="h-[300px] lg:h-[270px] overflow-x-auto md:px-5 w-full">
 			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-none">
