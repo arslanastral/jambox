@@ -6,6 +6,7 @@
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import Nexus from 'nexusui';
+	import { fade } from 'svelte/transition';
 
 	let peerCount = 0;
 	let hasAudioPermission = false;
@@ -166,15 +167,11 @@
 <div
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-center p-4"
 >
-	{#if !hasAudioPermission}
-		<button on:click={handleAudioPermissions}>Allow Sound</button>
-	{/if}
-
 	{#if !peerCount}
 		Finding Peers...
 	{/if}
 
-	<div class="rounded-container-token  grid-rows-1 grid bg-primary-9">
+	<div class="rounded-container-token relative grid-rows-1 grid bg-primary-9">
 		<div
 			class="flex items-center justify-between bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4"
 		>
@@ -204,5 +201,21 @@
 				{/each}
 			</div>
 		</div>
+
+		{#if !hasAudioPermission}
+			<div
+				out:fade={{ duration: 200 }}
+				class=" bg-primaryA-8 flex items-center justify-center rounded-container-token absolute inset-0 z-30"
+			>
+				<button
+					class="bg-primary-1 relative shadow-lg hover:animate-none transition-all ease-in-out duration-200 z-50 flex items-center gap-1 text-primary-12 p-3 rounded-full"
+					on:click={handleAudioPermissions}
+				>
+					<span class="absolute bg-primary-2 rounded-full z-30 animate-ping inset-0" />
+					<span class="material-symbols-rounded z-40 text-primary"> music_note </span>
+					<span class="z-40"> Allow Sound </span>
+				</button>
+			</div>
+		{/if}
 	</div>
 </div>
