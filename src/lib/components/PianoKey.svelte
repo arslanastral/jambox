@@ -20,16 +20,15 @@
 		keyClick(note, 'down');
 	}}
 	on:pointerup|preventDefault={(e) => {
-		e.currentTarget.releasePointerCapture(e.pointerId);
 		keyClick(note, 'up');
 	}}
 	on:pointerenter|preventDefault={(e) => {
-		if (e.buttons === 1 || e.buttons === 3) {
+		if (e.buttons === 1) {
 			keyClick(note, 'down');
 		}
 	}}
 	on:pointerleave|preventDefault={(e) => {
-		if (e.buttons === 1 || e.buttons === 3) {
+		if (e.buttons === 1) {
 			keyClick(note, 'up');
 		}
 	}}
