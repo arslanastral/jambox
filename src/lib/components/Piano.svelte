@@ -193,7 +193,7 @@
 			</div>
 		</div>
 		<div class="h-[300px] lg:h-[270px] overflow-x-auto md:px-5 w-full">
-			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-none">
+			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-pan-x">
 				{#each octave as octave}
 					{#each notes as note}
 						<PianoKey {handleKeyPress} {keyClick} note={note + octave} />
