@@ -5,8 +5,8 @@
 	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
-	import Nexus from 'nexusui';
 	import { fade } from 'svelte/transition';
+	import { dial } from '$lib/actions/dial';
 
 	let peerCount = 0;
 	let hasAudioPermission = false;
@@ -18,23 +18,6 @@
 
 	const [playNote, getNote] = room.makeAction('notes');
 	const [setName, getName] = room.makeAction('name');
-
-	function dialRef(node: HTMLElement) {
-		setRelease();
-		const dial = new Nexus.Dial(node, {
-			size: [60, 60],
-			min: 1,
-			max: 100,
-			value: 50
-		});
-
-		dial.colorize('accent', '#ff0');
-		dial.colorize('fill', '#333');
-
-		dial.on('change', (value: number) => {
-			setRelease(value);
-		});
-	}
 
 	onMount(async () => {
 		setName('some-player');
@@ -177,7 +160,7 @@
 		>
 			<InstrumentSelect />
 			<div class="flex flex-col items-center gap-1">
-				<div use:dialRef />
+				<div use:dial={setRelease} />
 			</div>
 
 			<div class="flex flex-col items-start gap-1">
