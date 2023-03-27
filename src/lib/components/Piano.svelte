@@ -67,7 +67,7 @@
 	}
 
 	const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-	let octave = ['3', '4', '5'];
+	let octave = [3, 4, 5];
 	const KEYS = [
 		'q',
 		'2',
@@ -107,35 +107,31 @@
 		'k'
 	];
 
-	function incrementOctave() {
-		if (octave.toString() === '5,6,7') {
-			return;
+	function handleOctave(type: 'inc' | 'dec') {
+		if (type === 'inc' && octave[octave.length - 1] !== 7) {
+			octave = octave.map((num) => {
+				const inc = num + 1;
+				return inc;
+			});
 		}
-		octave = octave.map((num) => {
-			const incremented = Number(num) + 1;
-			return incremented > 7 ? '7' : incremented.toString();
-		});
-	}
 
-	function decrementOctave() {
-		if (octave.toString() === '0,1,2') {
-			return;
+		if (type === 'dec' && octave[0] !== 0) {
+			octave = octave.map((num) => {
+				const dec = num - 1;
+				return dec;
+			});
 		}
-		octave = octave.map((num) => {
-			const decremented = Number(num) - 1;
-			return decremented < 0 ? '0' : decremented.toString();
-		});
 	}
 </script>
 
 <svelte:window
 	on:keypress={(e) => {
 		if (!e.repeat && e.key === '-') {
-			decrementOctave();
+			handleOctave('dec');
 		}
 
 		if (!e.repeat && e.key === '=') {
-			incrementOctave();
+			handleOctave('inc');
 		}
 	}}
 />
@@ -159,12 +155,14 @@
 			<div class="flex flex-col items-start gap-1">
 				<div class="text-sm font-light">Octave</div>
 				<div class="flex items-center justify-center gap-2">
-					<button class="material-symbols-rounded" on:click={decrementOctave}
+					<button class="material-symbols-rounded" on:click={() => handleOctave('dec')}
 						>do_not_disturb_on</button
 					>
 
 					<span> {octave[0]} </span>
-					<button class="material-symbols-rounded" on:click={incrementOctave}>add_circle</button>
+					<button class="material-symbols-rounded" on:click={() => handleOctave('inc')}
+						>add_circle</button
+					>
 				</div>
 			</div>
 		</div>
