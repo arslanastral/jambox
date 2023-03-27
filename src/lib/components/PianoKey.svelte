@@ -3,7 +3,6 @@
 	export let keyClick: (note: string, type: string) => void;
 	export let keybind: string;
 
-	console.log(note, keybind);
 	let active = false;
 
 	const whiteKeyClasses =
@@ -54,7 +53,6 @@
 	class:border-primary-7={active}
 	class:border-b-2={active}
 	class:text-primary-1={active}
-	class:hover:bg-primary-10={active}
 >
 	{note.includes('#') ? '' : note}</button
 >
