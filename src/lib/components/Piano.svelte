@@ -66,47 +66,46 @@
 		hasAudioPermission = true;
 	}
 
-	let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+	const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 	let octave = ['3', '4', '5'];
-
-	$: KEYMAP = {
-		[`C${octave[0]}`]: 'q',
-		[`C#${octave[0]}`]: '2',
-		[`D${octave[0]}`]: 'w',
-		[`D#${octave[0]}`]: '3',
-		[`E${octave[0]}`]: 'e',
-		[`F${octave[0]}`]: 'r',
-		[`F#${octave[0]}`]: '5',
-		[`G${octave[0]}`]: 't',
-		[`G#${octave[0]}`]: '6',
-		[`A${octave[0]}`]: 'y',
-		[`A#${octave[0]}`]: '7',
-		[`B${octave[0]}`]: 'u',
-		[`C${octave[1]}`]: 'i',
-		[`C#${octave[1]}`]: '9',
-		[`D${octave[1]}`]: 'o',
-		[`D#${octave[1]}`]: '0',
-		[`E${octave[1]}`]: 'p',
-		[`F${octave[1]}`]: 'z',
-		[`F#${octave[1]}`]: 's',
-		[`G${octave[1]}`]: 'x',
-		[`G#${octave[1]}`]: 'd',
-		[`A${octave[1]}`]: 'c',
-		[`A#${octave[1]}`]: 'f',
-		[`B${octave[1]}`]: 'v',
-		[`C${octave[2]}`]: 'b',
-		[`C#${octave[2]}`]: 'h',
-		[`D${octave[2]}`]: 'n',
-		[`D#${octave[2]}`]: 'j',
-		[`E${octave[2]}`]: 'm',
-		[`F${octave[2]}`]: ',',
-		[`F#${octave[2]}`]: 'l',
-		[`G${octave[2]}`]: '.',
-		[`G#${octave[2]}`]: ';',
-		[`A${octave[2]}`]: 'a',
-		[`A#${octave[2]}`]: '4',
-		[`B${octave[2]}`]: 'k'
-	};
+	const KEYS = [
+		'q',
+		'2',
+		'w',
+		'3',
+		'e',
+		'r',
+		'5',
+		't',
+		'6',
+		'y',
+		'7',
+		'u',
+		'i',
+		'9',
+		'o',
+		'0',
+		'p',
+		'z',
+		's',
+		'x',
+		'd',
+		'c',
+		'f',
+		'v',
+		'b',
+		'h',
+		'n',
+		'j',
+		'm',
+		',',
+		'l',
+		'.',
+		';',
+		'a',
+		'4',
+		'k'
+	];
 
 	function incrementOctave() {
 		if (octave.toString() === '5,6,7') {
@@ -126,12 +125,6 @@
 			const decremented = Number(num) - 1;
 			return decremented < 0 ? '0' : decremented.toString();
 		});
-	}
-
-	function handleKeyPress(e: KeyboardEvent, note: string, type: string) {
-		if (!e.repeat && KEYMAP[note] === e.key) {
-			keyClick(note, type);
-		}
 	}
 </script>
 
@@ -177,9 +170,9 @@
 		</div>
 		<div class="h-[300px] lg:h-[270px] overflow-x-auto md:px-5 w-full">
 			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-pan-x">
-				{#each octave as octave}
-					{#each notes as note}
-						<PianoKey {handleKeyPress} {keyClick} note={note + octave} />
+				{#each octave as octave, o}
+					{#each notes as note, n}
+						<PianoKey {keyClick} note={note + octave} keybind={KEYS[o * notes.length + n]} />
 					{/each}
 				{/each}
 			</div>
