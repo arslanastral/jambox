@@ -19,11 +19,11 @@ type SamplerInstrumentsOptions<T extends string> = {
 
 type SamplerInstruments<T extends string> = Record<T, Sampler>;
 
-type InstrumentName = (typeof instrumentConfig)[number]['name'];
-export const currentInstrument = writable<InstrumentName>(instrumentConfig[0].name);
+export type InstrumentName = (typeof instrumentConfig)[number]['name'];
 
 function createInstruments<T extends string>(options: SamplerInstrumentsOptions<T>) {
 	const { subscribe, set, update } = writable<SamplerInstruments<T>>({} as SamplerInstruments<T>);
+	const currentInstrument = writable<InstrumentName>();
 
 	function createSampler({ name, urls, baseUrl, onload, minify }: InstrumentConfig<T>): Sampler {
 		const { minifyAll, baseUrlAll } = options;
@@ -71,6 +71,10 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 				}
 			}
 			set(samplerInstruments);
+
+			if (instrumentNames) {
+				currentInstrument.set(instrumentNames[0]);
+			}
 		},
 		add: (instrumentName?: InstrumentName) => {
 			const instrumentConfig = options.instrumentsConfig.find((i) => i.name === instrumentName);
@@ -83,7 +87,8 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 					return i;
 				});
 			}
-		}
+		},
+		selected: currentInstrument
 	};
 }
 
@@ -92,5 +97,7 @@ export const allInstruments = createInstruments({
 	baseUrlAll: PUBLIC_SAMPLES_URL,
 	instrumentsConfig: instrumentConfig
 });
+
+export const currentInstrument = allInstruments.selected;
 
 allInstruments.load(['grand-piano']);
