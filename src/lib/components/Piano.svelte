@@ -1,64 +1,53 @@
 <script lang="ts">
-	import { joinRoom } from 'trystero';
 	import { start } from 'tone';
 	import { onMount } from 'svelte';
-	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
+	import {
+		allInstruments,
+		currentInstrument,
+		type InstrumentName
+	} from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
+	import { room, peerCount, type Action, type NotesAction } from '$lib/stores/webrtc/room';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { selfId } from 'trystero';
 
-	let peerCount = 0;
 	let hasAudioPermission = false;
+	let roomId = $page.params.id;
 
-	const config = { appId: 'pianojam-xcvd' };
-	const room = joinRoom(config, 'pianojam_room-sdf');
-
-	const peerNames = {};
-
-	const [playNote, getNote] = room.makeAction('notes');
-	const [setName, getName] = room.makeAction('name');
-
-	onMount(async () => {
-		setName('some-player');
-
-		room.onPeerJoin((peerId) => {
-			peerCount++;
-			setName('Oedipa', peerId);
-			console.log(`${peerNames[peerId] || 'a weird stranger'} joined`);
-		});
-
-		room.onPeerLeave((peerId) => {
-			if (!room.getPeers().length) {
-				peerCount = 0;
-			}
-
-			console.log(`${peerNames[peerId] || 'a weird stranger'} left`);
-			console.log(`${room.getPeers().length} peers left`);
-		});
-
-		getNote((data, peerId) => {
-			const endTimestamp = Date.now();
-			const latency = endTimestamp - data.timestamp;
-			data.type === 'down'
-				? instrument.triggerAttack(data.note)
-				: instrument.triggerRelease(data.note);
-			console.log(`Note: ${data.note} , Latency: ${latency}ms`);
-		});
-
-		getName((name, peerId) => (peerNames[peerId] = name));
-	});
-
-	$: instrument = $allInstruments[$currentInstrument];
+	let selectedInstrument = $allInstruments[$currentInstrument];
 
 	function setRelease(value = 50) {
-		instrument.release = value;
+		selectedInstrument.release = value;
 	}
 
-	function keyClick(note: string, type: string) {
-		type === 'down' ? instrument.triggerAttack(note) : instrument.triggerRelease(note);
+	export let sendNote: Action<NotesAction>[0];
+	export let receiveNote: Action<NotesAction>[1];
+
+	function handleNote({ note, instrument, isPressed }: NotesAction) {
+		isPressed
+			? $allInstruments[instrument].triggerAttack(note)
+			: $allInstruments[instrument].triggerRelease(note);
 		const startTimestamp = Date.now();
-		playNote({ note, timestamp: startTimestamp, type });
+		if (roomId) {
+			sendNote({ note, timestamp: startTimestamp, isPressed, instrument });
+		}
+	}
+
+	if (roomId) {
+		receiveNote((data, peerId) => {
+			const endTimestamp = Date.now();
+			const latency = data.timestamp ? endTimestamp - data.timestamp + 'ms' : 'unknown';
+
+			const { isPressed, note, instrument } = data;
+			isPressed
+				? $allInstruments[instrument].triggerAttack(note)
+				: $allInstruments[instrument].triggerRelease(note);
+			console.log(`Note: ${data.note} , Latency: ${latency}`);
+		});
 	}
 
 	function handleAudioPermissions() {
@@ -122,6 +111,10 @@
 			});
 		}
 	}
+
+	function handleRoomJoin() {
+		goto('/rooms/' + crypto.randomUUID());
+	}
 </script>
 
 <svelte:window
@@ -137,17 +130,33 @@
 />
 
 <div
-	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-center p-4"
+	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-around p-4"
 >
-	{#if !peerCount}
-		Finding Peers...
-	{/if}
+	<div class="flex items-center justify-between">
+		<h1 class="text-3xl text-primary-12">
+			tunebox <span class="material-symbols-rounded text-primary-9"> music_note</span>
+		</h1>
+
+		{#if roomId && !$peerCount}
+			<span>Finding Peers...</span>
+		{/if}
+		<div class="flex items-center gap-2">
+			{#if roomId}
+				<span>{roomId}</span>
+			{:else}
+				<button on:click={handleRoomJoin} class="px-4 py-2 bg-primary-4 rounded-full "
+					>+ Create Room</button
+				>
+			{/if}
+		</div>
+	</div>
 
 	<div class="rounded-container-token relative grid-rows-1 grid bg-primary-9">
 		<div
 			class="flex items-center justify-between bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4"
 		>
 			<InstrumentSelect />
+
 			<div class="flex flex-col items-center gap-1">
 				<div use:dial={setRelease} />
 			</div>
@@ -170,7 +179,7 @@
 			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-pan-x">
 				{#each octave as octave, o}
 					{#each notes as note, n}
-						<PianoKey {keyClick} note={note + octave} keybind={KEYS[o * notes.length + n]} />
+						<PianoKey {handleNote} note={note + octave} keybind={KEYS[o * notes.length + n]} />
 					{/each}
 				{/each}
 			</div>

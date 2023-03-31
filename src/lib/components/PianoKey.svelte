@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { currentInstrument } from '$lib/stores/tonejs/instruments';
+	import type { NotesAction } from '$lib/stores/webrtc/room';
 	export let note: string;
-	export let keyClick: (note: string, type: string) => void;
+	export let handleNote: (noteAction: NotesAction) => void;
 	export let keybind: string;
 
 	let active = false;
@@ -15,13 +17,13 @@
 	on:keydown={(e) => {
 		if (!e.repeat && e.key === keybind) {
 			active = true;
-			keyClick(note, 'down');
+			handleNote({ note, instrument: $currentInstrument, isPressed: true });
 		}
 	}}
 	on:keyup={(e) => {
 		if (!e.repeat && e.key === keybind) {
 			active = false;
-			keyClick(note, 'up');
+			handleNote({ note, instrument: $currentInstrument, isPressed: false });
 		}
 	}}
 />
@@ -30,29 +32,29 @@
 	on:pointerdown|preventDefault={(e) => {
 		e.currentTarget.releasePointerCapture(e.pointerId);
 		active = true;
-		keyClick(note, 'down');
+		handleNote({ note, instrument: $currentInstrument, isPressed: true });
 	}}
 	on:pointerup|preventDefault={(e) => {
 		active = false;
-		keyClick(note, 'up');
+		handleNote({ note, instrument: $currentInstrument, isPressed: false });
 	}}
 	on:pointerenter|preventDefault={(e) => {
 		if (e.buttons === 1) {
 			active = true;
-			keyClick(note, 'down');
+			handleNote({ note, instrument: $currentInstrument, isPressed: true });
 		}
 	}}
 	on:pointerleave|preventDefault={(e) => {
 		if (e.buttons === 1) {
 			active = false;
-			keyClick(note, 'up');
+			handleNote({ note, instrument: $currentInstrument, isPressed: false });
 		}
 	}}
 	class={note.includes('#') ? blackKeyClasses : whiteKeyClasses}
-	class:bg-primary-10={active}
-	class:border-primary-7={active}
-	class:border-b-2={active}
-	class:text-primary-1={active}
+	class:!bg-amber-500={active}
+	class:!border-amber-500={active}
+	class:!border-b-0={active}
+	class:!text-surface-1={active}
 >
 	{note.includes('#') ? '' : note}</button
 >
