@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentInstrument, allInstruments } from '$lib/stores/tonejs/instruments';
+	import { allInstruments } from '$lib/stores/tonejs/instruments';
 	import { instrumentConfig } from '$lib/stores/tonejs/instrumentsConfig';
 	import { Svroller } from 'svrollbar';
 	import { createListbox } from 'svelte-headlessui';
@@ -18,10 +18,10 @@
 	function onSelect(e: Event) {
 		let instrumentName = (e as CustomEvent).detail.selected.name;
 		if (instrumentName in $allInstruments) {
-			$currentInstrument = instrumentName;
+			allInstruments.selected.set(instrumentName);
 		} else {
 			allInstruments.add(instrumentName);
-			$currentInstrument = instrumentName;
+			allInstruments.selected.set(instrumentName);
 		}
 	}
 </script>
