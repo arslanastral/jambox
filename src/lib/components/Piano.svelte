@@ -15,6 +15,7 @@
 	import { page } from '$app/stores';
 	import { selfId } from 'trystero';
 	import { clickToCopy } from '$lib/actions/utils';
+	import Modal from './common/Modal.svelte';
 
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
@@ -142,13 +143,14 @@
 			<span>Finding Peers...</span>
 		{/if}
 
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-4">
 			{#if roomId}
+				<Modal />
 				<button
 					use:clickToCopy={{ text: $page.url.href }}
-					class="px-5 py-3 bg-primary-4 flex items-center gap-2 rounded-full "
+					class="px-4 py-2  ring-2 ring-primary-4  bg-primary-3 flex items-center gap-2 rounded-full "
 				>
-					<span class="material-symbols-rounded">link</span> Copy Link</button
+					<span class="material-symbols-rounded">content_copy</span> Copy Link</button
 				>
 			{:else}
 				<button on:click={handleRoomJoin} class="px-4 py-3 bg-primary-4 rounded-full "
@@ -198,7 +200,7 @@
 				class=" bg-primaryA-8 flex items-center justify-center rounded-container-token absolute inset-0 z-30"
 			>
 				<button
-					class="bg-primary-1 relative shadow-lg hover:animate-none transition-all ease-in-out duration-200 z-50 flex items-center gap-1 text-primary-12 p-3 rounded-full"
+					class="bg-primary-1 relative shadow-lg hover:animate-none transition-all ease-in-out duration-200 z-30 flex items-center gap-1 text-primary-12 p-3 rounded-full"
 					on:click={handleAudioPermissions}
 				>
 					<span class="absolute bg-primary-2 rounded-full z-30 animate-ping inset-0" />
