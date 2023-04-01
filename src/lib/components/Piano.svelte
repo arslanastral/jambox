@@ -14,6 +14,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { selfId } from 'trystero';
+	import { clickToCopy } from '$lib/actions/utils';
 
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
@@ -134,24 +135,23 @@
 >
 	<div class="flex items-center justify-between">
 		<h1 class="text-3xl text-primary-12">
-			tunebox <span class="material-symbols-rounded text-primary-9"> music_note</span>
+			tunebox <span id="innert" class="material-symbols-rounded text-primary-9"> music_note</span>
 		</h1>
 
 		{#if roomId && !$peerCount}
 			<span>Finding Peers...</span>
 		{/if}
 
-		{#if $peers}
-			{#each $peers as item}
-				<span>{item}</span>
-			{/each}
-		{/if}
-
 		<div class="flex items-center gap-2">
 			{#if roomId}
-				<span>{roomId}</span>
+				<button
+					use:clickToCopy={{ text: $page.url.href }}
+					class="px-5 py-3 bg-primary-4 flex items-center gap-2 rounded-full "
+				>
+					<span class="material-symbols-rounded">link</span> Copy Link</button
+				>
 			{:else}
-				<button on:click={handleRoomJoin} class="px-4 py-2 bg-primary-4 rounded-full "
+				<button on:click={handleRoomJoin} class="px-4 py-3 bg-primary-4 rounded-full "
 					>+ Create Room</button
 				>
 			{/if}
