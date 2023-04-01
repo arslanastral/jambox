@@ -10,7 +10,7 @@
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
-	import { room, peerCount, type Action, type NotesAction } from '$lib/stores/webrtc/room';
+	import { room, peerCount, peers, type Action, type NotesAction } from '$lib/stores/webrtc/room';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { selfId } from 'trystero';
@@ -140,6 +140,13 @@
 		{#if roomId && !$peerCount}
 			<span>Finding Peers...</span>
 		{/if}
+
+		{#if $peers}
+			{#each $peers as item}
+				<span>{item}</span>
+			{/each}
+		{/if}
+
 		<div class="flex items-center gap-2">
 			{#if roomId}
 				<span>{roomId}</span>

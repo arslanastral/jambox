@@ -15,6 +15,7 @@ export type NotesAction = {
 function createRoom(appId: string) {
 	const { subscribe, set } = writable<Room | undefined>();
 	const { subscribe: subscribePeerCount, update: updatePeerCount } = writable<number>(0);
+	const { subscribe: subscribePeers, update: updatePeers } = writable<string[]>([]);
 
 	const peerNames: Record<string, string> = {};
 	const actions: Record<string, Action<unknown>> = {};
@@ -31,11 +32,21 @@ function createRoom(appId: string) {
 			});
 
 			room.onPeerJoin((peerId) => {
+				updatePeers((p) => {
+					p.push(peerId);
+					return p;
+				});
 				updatePeerCount((n) => n + 1);
+
 				console.log(`${peerNames[peerId] || 'a weird stranger'} joined`);
 			});
 
 			room.onPeerLeave((peerId) => {
+				updatePeers((p) => {
+					p.splice(p.indexOf(peerId), 1);
+
+					return p;
+				});
 				updatePeerCount((n) => n - 1);
 				console.log(`${peerNames[peerId] || 'a weird stranger'} left`);
 				console.log(`${room?.getPeers().length} peers left`);
@@ -44,6 +55,9 @@ function createRoom(appId: string) {
 		actions,
 		peerCount: {
 			subscribe: subscribePeerCount
+		},
+		peers: {
+			subscribe: subscribePeers
 		}
 	};
 }
@@ -51,3 +65,4 @@ function createRoom(appId: string) {
 export const room = createRoom('pianojam-xcvd');
 
 export const peerCount = room.peerCount;
+export const peers = room.peers;
