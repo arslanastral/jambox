@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import { joinRoom } from 'trystero';
 import type { InstrumentName } from '$lib/stores/tonejs/instruments';
 import type { Room, ActionSender, ActionReceiver, ActionProgress } from 'trystero';
+import { pick } from 'nexusui';
 
 export type Action<T> = [ActionSender<T>, ActionReceiver<T>, ActionProgress];
 
@@ -12,12 +13,18 @@ export type NotesAction = {
 	isPressed: boolean;
 };
 
+type Peer = {
+	id: string;
+	emoji: string;
+};
+
+const emojis = ['🦁', '🐳', '🐵', '🐺', '😺', '🐶', '🦄'];
+
 function createRoom(appId: string) {
 	const { subscribe, set } = writable<Room | undefined>();
 	const { subscribe: subscribePeerCount, update: updatePeerCount } = writable<number>(0);
-	const { subscribe: subscribePeers, update: updatePeers } = writable<string[]>([]);
+	const { subscribe: subscribePeers, update: updatePeers } = writable<Peer[]>([]);
 
-	const peerNames: Record<string, string> = {};
 	const actions: Record<string, Action<unknown>> = {};
 
 	return {
@@ -33,23 +40,25 @@ function createRoom(appId: string) {
 
 			room.onPeerJoin((peerId) => {
 				updatePeers((p) => {
-					p.push(peerId);
+					const usedEmojis = p.map((p) => p.emoji);
+					const unusedEmojis = emojis.filter((e) => !usedEmojis.includes(e));
+					p.push({
+						id: peerId,
+						emoji: pick(...unusedEmojis)
+					});
 					return p;
 				});
 				updatePeerCount((n) => n + 1);
-
-				console.log(`${peerNames[peerId] || 'a weird stranger'} joined`);
 			});
 
 			room.onPeerLeave((peerId) => {
 				updatePeers((p) => {
-					p.splice(p.indexOf(peerId), 1);
+					const filtered = p.filter((p) => p.id !== peerId);
+					p = filtered;
 
 					return p;
 				});
 				updatePeerCount((n) => n - 1);
-				console.log(`${peerNames[peerId] || 'a weird stranger'} left`);
-				console.log(`${room?.getPeers().length} peers left`);
 			});
 		},
 		actions,

@@ -16,6 +16,7 @@
 	import { selfId } from 'trystero';
 	import { clickToCopy } from '$lib/actions/utils';
 	import Modal from './common/Modal.svelte';
+	import Peers from './common/Peers.svelte';
 
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
@@ -142,6 +143,8 @@
 		{#if roomId && !$peerCount}
 			<span>Finding Peers...</span>
 		{/if}
+
+		<Peers />
 
 		<div class="flex items-center gap-4">
 			{#if roomId}
