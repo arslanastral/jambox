@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { joinRoom, selfId } from 'trystero';
+import { PUBLIC_APPID } from '$env/static/public';
 import type { InstrumentName } from '$lib/stores/tonejs/instruments';
 import type { Room, ActionSender, ActionReceiver, ActionProgress } from 'trystero';
 import { pick } from 'nexusui';
@@ -137,7 +138,7 @@ function createRoom(appId: string) {
 	};
 }
 
-export const room = createRoom('pianojam-xcvd');
+export const room = createRoom(PUBLIC_APPID);
 
 export const peerCount = room.peerCount;
 export const peers = room.peers;
