@@ -21,4 +21,8 @@
 			>
 		{/each}
 	{/if}
+
+	{#if $peers.length === 1}
+		<span class="text-md">Finding Your Friends...</span>
+	{/if}
 </div>

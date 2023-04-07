@@ -9,12 +9,14 @@
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
-	import { room, peerCount, peers, type Action, type NotesAction } from '$lib/stores/webrtc/room';
+	import { room, peers } from '$lib/stores/webrtc/room';
+	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { clickToCopy } from '$lib/actions/copy';
 	import Modal from './common/Modal.svelte';
 	import Peers from './common/Peers.svelte';
+	import Logo from './common/Logo.svelte';
 
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
@@ -134,13 +136,7 @@
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-around p-4"
 >
 	<div class="flex items-center justify-between">
-		<h1 class="text-3xl text-primary-12 font-logo">
-			JAMBOX <span id="innert" class="material-symbols-rounded text-primary-9"> music_note</span>
-		</h1>
-
-		{#if roomId && !$peerCount}
-			<span>Finding Peers...</span>
-		{/if}
+		<Logo />
 
 		<Peers />
 

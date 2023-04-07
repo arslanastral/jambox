@@ -49,7 +49,6 @@ const emojis = [
 
 function createRoom(appId: string) {
 	const { subscribe, set } = writable<Room | undefined>();
-	const { subscribe: subscribePeerCount, update: updatePeerCount } = writable<number>(0);
 	const { subscribe: subscribePeers, update: updatePeers } = writable<PeerProfile[]>([]);
 
 	const actions: Record<string, Action<unknown>> = {};
@@ -79,7 +78,6 @@ function createRoom(appId: string) {
 
 			room.onPeerJoin((peerId) => {
 				sendProfile(selfProfile, peerId);
-				updatePeerCount((n) => n + 1);
 			});
 
 			receiveProfile((data, peerId) => {
@@ -125,13 +123,9 @@ function createRoom(appId: string) {
 
 					return p;
 				});
-				updatePeerCount((n) => n - 1);
 			});
 		},
 		actions,
-		peerCount: {
-			subscribe: subscribePeerCount
-		},
 		peers: {
 			subscribe: subscribePeers
 		}
@@ -139,6 +133,4 @@ function createRoom(appId: string) {
 }
 
 export const room = createRoom(PUBLIC_APPID);
-
-export const peerCount = room.peerCount;
 export const peers = room.peers;
