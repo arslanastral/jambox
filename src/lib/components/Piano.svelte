@@ -134,8 +134,8 @@
 	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-around p-4"
 >
 	<div class="flex items-center justify-between">
-		<h1 class="text-3xl text-primary-12">
-			tunebox <span id="innert" class="material-symbols-rounded text-primary-9"> music_note</span>
+		<h1 class="text-3xl text-primary-12 font-logo">
+			JAMBOX <span id="innert" class="material-symbols-rounded text-primary-9"> music_note</span>
 		</h1>
 
 		{#if roomId && !$peerCount}
