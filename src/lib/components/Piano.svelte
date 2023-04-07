@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { start } from 'tone';
-	import { onMount } from 'svelte';
 	import {
 		allInstruments,
 		currentInstrument,
@@ -13,8 +12,7 @@
 	import { room, peerCount, peers, type Action, type NotesAction } from '$lib/stores/webrtc/room';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { selfId } from 'trystero';
-	import { clickToCopy } from '$lib/actions/utils';
+	import { clickToCopy } from '$lib/actions/copy';
 	import Modal from './common/Modal.svelte';
 	import Peers from './common/Peers.svelte';
 
@@ -151,12 +149,12 @@
 				<Modal />
 				<button
 					use:clickToCopy={{ text: $page.url.href }}
-					class="px-4 py-2  ring-2 ring-primary-4  bg-primary-3 flex items-center gap-2 rounded-full "
+					class="px-4 py-2 ring-2 ring-primary-4 bg-primary-3 flex items-center gap-2 rounded-full"
 				>
 					<span class="material-symbols-rounded">content_copy</span> Copy Link</button
 				>
 			{:else}
-				<button on:click={handleRoomJoin} class="px-4 py-3 bg-primary-4 rounded-full "
+				<button on:click={handleRoomJoin} class="px-4 py-3 bg-black text-white rounded-full"
 					>+ Create Room</button
 				>
 			{/if}

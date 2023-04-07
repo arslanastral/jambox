@@ -1,24 +1,24 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { generateQRCode } from '$lib/actions/generateQRCode';
+	import { QRCode } from '$lib/actions/qrcode';
 	import { createDialog } from 'svelte-headlessui';
 	import { fade, scale } from 'svelte/transition';
 
 	const dialog = createDialog({ label: 'Scan to join the jam' });
 
-	let qrContainer: HTMLCanvasElement;
+	let QRContainer: HTMLCanvasElement;
 
-	function downloadCanvas() {
+	function downloadQRCode() {
 		const link = document.createElement('a');
-		link.download = 'canvas.png';
-		link.href = qrContainer.toDataURL();
+		link.download = $page.params.id;
+		link.href = QRContainer.toDataURL();
 		link.click();
 	}
 </script>
 
 <div class="z-50">
 	<button
-		class="material-symbols-rounded w-10 h-10 bg-primary-3 ring-2 ring-primary-4 flex items-center justify-center rounded-full "
+		class="material-symbols-rounded w-10 h-10 bg-primary-3 ring-2 ring-primary-4 flex items-center justify-center rounded-full"
 		on:click={dialog.open}
 	>
 		qr_code
@@ -42,11 +42,11 @@
 					>
 						<h3 class="text-xl py-4 font-medium leading-6 text-gray-900">Scan To Join Room</h3>
 
-						<canvas bind:this={qrContainer} class="py-4" use:generateQRCode={$page.url.href} />
+						<canvas bind:this={QRContainer} class="py-4" use:QRCode={$page.url.href} />
 
 						<div class="mt-4 flex justify-center items-center">
 							<button
-								on:click={downloadCanvas}
+								on:click={downloadQRCode}
 								type="button"
 								class="flex justify-center items-center gap-2 rounded-md border border-transparent bg-primary-4 w-full px-4 py-2 text-sm font-medium text-blue-900 hover:bg-primary-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
 							>
