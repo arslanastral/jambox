@@ -41,7 +41,6 @@
 		"nexusui": "^2.1.6",
 		"qr-creator": "^1.0.0",
 		"svelte-headlessui": "^0.0.15",
-		"svelte-tippy": "^1.3.2",
 		"svrollbar": "^0.12.0",
 		"tippy.js": "^6.3.7",
 		"tone": "^14.8.49",
