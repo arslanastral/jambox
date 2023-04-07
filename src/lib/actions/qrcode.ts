@@ -1,6 +1,6 @@
 import QrCreator from 'qr-creator';
 
-export function generateQRCode(node: HTMLCanvasElement, text: string) {
+export function QRCode(node: HTMLCanvasElement, text: string) {
 	QrCreator.render(
 		{
 			text: text,
