@@ -12,6 +12,7 @@
 @layer base {
 	:root {
 		--theme-font-family-base: Inter Tight, system-ui;
+		--theme-font-family-logo: Syne, sans-serif;
 		--theme-rounded-base: 9999px;
 		--theme-rounded-container: 24px;
 		--theme-border-base: 1px;

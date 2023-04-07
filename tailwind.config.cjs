@@ -5,7 +5,8 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--theme-font-family-base)']
+				sans: ['var(--theme-font-family-base)'],
+				logo: ['var(--theme-font-family-logo)']
 			},
 			gridTemplateAreas: {},
 			gridTemplateColumns: {},
