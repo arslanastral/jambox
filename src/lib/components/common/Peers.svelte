@@ -1,4 +1,5 @@
 <script>
+	import { tooltip } from '$lib/actions/tooltip';
 	import { peers } from '$lib/stores/webrtc/room';
 	import { selfId } from 'trystero';
 
@@ -14,6 +15,7 @@
 	{#if $peers}
 		{#each sortedPeers as item, i}
 			<span
+				use:tooltip={item.id === selfId ? 'You' : ''}
 				class="h-12 w-12 text-xl flex justify-center items-center ring-2 ring-primary-5 rounded-full bg-primary-4"
 				class:ring-primary-9={item.id === selfId}>{item.emoji}</span
 			>
