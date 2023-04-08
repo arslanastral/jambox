@@ -7,17 +7,23 @@ import { pick } from 'nexusui';
 
 export type Action<T> = [ActionSender<T>, ActionReceiver<T>, ActionProgress];
 
+type PeerProfile = {
+	id: string;
+	emoji: 'string';
+	joined: number;
+};
+
 export type NotesAction = {
 	note: string;
 	timestamp?: number;
 	instrument: InstrumentName;
 	isPressed: boolean;
+	id: PeerProfile['id'];
 };
 
-type PeerProfile = {
-	id: string;
-	emoji: 'string';
-	joined: number;
+type ActiveNote = {
+	note: string;
+	id: NotesAction['id'];
 };
 
 type PeerError = EmojiError;
@@ -134,3 +140,5 @@ function createRoom(appId: string) {
 
 export const room = createRoom(PUBLIC_APPID);
 export const peers = room.peers;
+export const activeKeys = writable<ActiveNote[]>([]);
+export { selfId };
