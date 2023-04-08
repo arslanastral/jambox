@@ -1,7 +1,6 @@
 <script>
 	import { tooltip } from '$lib/actions/tooltip';
-	import { peers } from '$lib/stores/webrtc/room';
-	import { selfId } from 'trystero';
+	import { peers, selfId } from '$lib/stores/webrtc/room';
 
 	$: sortedPeers = $peers.sort((a, b) => {
 		if (a.id === selfId || b.id === selfId) {
