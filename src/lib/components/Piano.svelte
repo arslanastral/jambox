@@ -1,15 +1,11 @@
 <script lang="ts">
 	import { start } from 'tone';
-	import {
-		allInstruments,
-		currentInstrument,
-		type InstrumentName
-	} from '$lib/stores/tonejs/instruments';
+	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
-	import { room, peers } from '$lib/stores/webrtc/room';
+	import { activeKeys } from '$lib/stores/webrtc/room';
 	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -30,13 +26,13 @@
 	export let sendNote: Action<NotesAction>[0];
 	export let receiveNote: Action<NotesAction>[1];
 
-	function handleNote({ note, instrument, isPressed }: NotesAction) {
+	function handleNote({ note, instrument, isPressed, id }: NotesAction) {
 		isPressed
 			? $allInstruments[instrument].triggerAttack(note)
 			: $allInstruments[instrument].triggerRelease(note);
 		const startTimestamp = Date.now();
 		if (roomId) {
-			sendNote({ note, timestamp: startTimestamp, isPressed, instrument });
+			sendNote({ note, timestamp: startTimestamp, isPressed, instrument, id });
 		}
 	}
 
@@ -45,10 +41,16 @@
 			const endTimestamp = Date.now();
 			const latency = data.timestamp ? endTimestamp - data.timestamp + 'ms' : 'unknown';
 
-			const { isPressed, note, instrument } = data;
-			isPressed
-				? $allInstruments[instrument].triggerAttack(note)
-				: $allInstruments[instrument].triggerRelease(note);
+			const { isPressed, note, instrument, id } = data;
+
+			if (isPressed) {
+				$allInstruments[instrument].triggerAttack(note);
+				$activeKeys = [...$activeKeys, { note, id }];
+			} else {
+				$allInstruments[instrument].triggerRelease(note);
+				$activeKeys = $activeKeys.filter((n) => n.note !== note);
+			}
+
 			console.log(`Note: ${data.note} , Latency: ${latency}`);
 		});
 	}
