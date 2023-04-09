@@ -20,7 +20,6 @@ specifiers:
   svelte: ^3.58.0
   svelte-check: ^3.2.0
   svelte-headlessui: ^0.0.15
-  svrollbar: ^0.12.0
   tailwindcss: ^3.3.1
   tippy.js: ^6.3.7
   tone: ^14.8.49
@@ -34,7 +33,6 @@ dependencies:
   nexusui: 2.1.6
   qr-creator: 1.0.0
   svelte-headlessui: 0.0.15
-  svrollbar: 0.12.0
   tippy.js: 6.3.7
   tone: 14.8.49
   trystero: 0.12.0_eslint@8.37.0
@@ -5544,10 +5542,6 @@ packages:
     resolution: {integrity: sha512-brIBNNB76mXFmU/Kerm4wFnkskBbluBDCjx/8TcpYRb298Yh2dztS2kQ6bhtjMcvUhd5ynClfwpz5h2gnzdQ1A==}
     engines: {node: '>= 8'}
     dev: true
-
-  /svrollbar/0.12.0:
-    resolution: {integrity: sha512-okH0sz8bGtw+tgOfN1mpEtbveifxROcE3mbUMBJ1RQz8Q+1rVr+nVG7EAJ9b0G80cGDu7dskjAWuzj3iru0k5g==}
-    dev: false
 
   /tailwindcss/3.3.1_postcss@8.4.21:
     resolution: {integrity: sha512-Vkiouc41d4CEq0ujXl6oiGFQ7bA3WEhUZdTgXAhtKxSy49OmKs8rEfQmupsfF0IGW8fv2iQkp1EVUuapCFrZ9g==}
