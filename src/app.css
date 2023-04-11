@@ -10,6 +10,21 @@
 @tailwind utilities;
 
 @layer base {
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-primary-11) var(--color-primary-12);
+	}
+
+	*::-webkit-scrollbar {
+		width: 5px;
+		height: 8px;
+		background-color: var(--color-primary-9);
+	}
+
+	*::-webkit-scrollbar-thumb {
+		background: var(--color-primary-11);
+	}
+
 	:root {
 		--theme-font-family-base: Inter Tight, system-ui;
 		--theme-font-family-logo: Syne, sans-serif;
