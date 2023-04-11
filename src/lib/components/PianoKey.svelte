@@ -10,9 +10,9 @@
 	$: activePeer = $activeKeys.find((k) => k.note === note);
 
 	const whiteKeyClasses =
-		'bg-primary-1 relative flex touch-none text-primary-8 select-none justify-center items-end border-b-4 border-r border-primary-5 rounded-b h-[calc(100%+4px)] w-12 transition-all duration-150 ease-in-out';
+		'bg-primary-1 relative flex touch-none text-primary-8 select-none justify-center items-end border-b-4 border-r border-primary-5 rounded-b h-full w-12 transition-all duration-150 ease-in-out';
 	const blackKeyClasses =
-		'bg-primary-12 relative flex touch-none select-none justify-center items-end text-primary-6 text-xs border-b-4 border-primary-12 h-40 w-7 rounded-b -ml-3.5 -mr-3.5 z-10 transition-all duration-150 ease-in-out';
+		'bg-primary-12 relative flex touch-none select-none justify-center items-end text-primary-6 text-xs border-b-4 border-primary-12 h-[67%] w-7 rounded-b -ml-3.5 -mr-3.5 z-10 transition-all duration-150 ease-in-out';
 
 	const keyClasses = note.includes('#') ? blackKeyClasses : whiteKeyClasses;
 
@@ -43,8 +43,10 @@
 <button
 	on:pointerdown|preventDefault={(e) => {
 		e.currentTarget.releasePointerCapture(e.pointerId);
-		active = true;
-		handleNote(pressed);
+		if (!active) {
+			active = true;
+			handleNote(pressed);
+		}
 	}}
 	on:pointerup|preventDefault={(e) => {
 		active = false;
