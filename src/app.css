@@ -11,6 +11,7 @@
 
 @layer base {
 	* {
+		-webkit-tap-highlight-color: transparent;
 		scrollbar-width: thin;
 		scrollbar-color: var(--color-primary-11) var(--color-primary-12);
 	}
