@@ -8,6 +8,9 @@ module.exports = {
 				sans: ['var(--theme-font-family-base)'],
 				logo: ['var(--theme-font-family-logo)']
 			},
+			screens: {
+				xs: '568px'
+			},
 			gridTemplateAreas: {},
 			gridTemplateColumns: {},
 			gridTemplateRows: {}
