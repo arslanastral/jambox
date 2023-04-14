@@ -68,14 +68,14 @@
 >
 	{#if active && selfEmoji}
 		<span
-			class="h-12 w-12 absolute -bottom-6 text-xl flex justify-center items-center ring-2 ring-primary-5 rounded-full bg-primary-4"
+			class="h-10 w-10 absolute -bottom-4 text-xl flex justify-center items-center ring-2 ring-primary-5 rounded-full bg-primary-4"
 			>{selfEmoji}</span
 		>
 	{/if}
 
 	{#if activePeer}
 		<span
-			class="h-12 w-12 absolute -bottom-6 text-xl flex justify-center items-center ring-2 ring-primary-5 rounded-full bg-primary-4"
+			class="h-10 w-10 absolute -bottom-6 text-xl flex justify-center items-center ring-2 ring-primary-5 rounded-full bg-primary-4"
 			>{peerEmoji}</span
 		>
 	{/if}
