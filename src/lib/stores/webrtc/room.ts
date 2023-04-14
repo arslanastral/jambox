@@ -4,6 +4,7 @@ import { PUBLIC_APPID } from '$env/static/public';
 import type { InstrumentName } from '$lib/stores/tonejs/instruments';
 import type { Room, ActionSender, ActionReceiver, ActionProgress } from 'trystero';
 import { pick } from 'nexusui';
+import { goto } from '$app/navigation';
 
 export type Action<T> = [ActionSender<T>, ActionReceiver<T>, ActionProgress];
 
@@ -58,11 +59,12 @@ function createRoom(appId: string) {
 	const { subscribe: subscribePeers, update: updatePeers } = writable<PeerProfile[]>([]);
 
 	const actions: Record<string, Action<unknown>> = {};
+	let room: Room;
 
 	return {
 		subscribe,
 		join: (config: { roomId: string; roomActions: string[] }) => {
-			const room = joinRoom({ appId }, config.roomId);
+			room = joinRoom({ appId }, config.roomId);
 
 			set(room);
 
@@ -130,6 +132,14 @@ function createRoom(appId: string) {
 					return p;
 				});
 			});
+		},
+		exit: () => {
+			room.leave();
+			updatePeers((p) => {
+				p = [];
+				return p;
+			});
+			goto('/');
 		},
 		actions,
 		peers: {
