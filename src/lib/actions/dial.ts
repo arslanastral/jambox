@@ -4,7 +4,7 @@ export function dial(
 	node: HTMLElement,
 	onChange: (value?: number) => void,
 	options = {
-		size: [60, 60],
+		size: [40, 40],
 		min: 1,
 		max: 100,
 		value: 50
