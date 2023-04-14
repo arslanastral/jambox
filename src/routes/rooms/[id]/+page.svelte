@@ -8,4 +8,8 @@
 	const [sendNote, receiveNote] = room.actions.notes as Action<NotesAction>;
 </script>
 
+<svelte:head>
+	<title>JAMBOX 🎺 #{$page.params.id.slice(0, 6)}</title>
+</svelte:head>
+
 <Piano {sendNote} {receiveNote} />
