@@ -3,6 +3,7 @@
 	import { QRCode } from '$lib/actions/qrcode';
 	import { createDialog } from 'svelte-headlessui';
 	import { fade, scale } from 'svelte/transition';
+	import ActionButton from './ActionButton.svelte';
 
 	const dialog = createDialog({ label: 'Scan to join the jam' });
 
@@ -17,12 +18,7 @@
 </script>
 
 <div class="z-50">
-	<button
-		class="material-symbols-rounded w-10 h-10 bg-primary-3 ring-2 ring-primary-4 flex items-center justify-center rounded-full"
-		on:click={dialog.open}
-	>
-		qr_code
-	</button>
+	<ActionButton on:click={dialog.open} icon="qr_code" />
 
 	{#if $dialog.expanded}
 		<div transition:fade={{ duration: 200 }}>
@@ -37,12 +33,16 @@
 			<div class="flex min-h-full items-center justify-center p-4 text-center">
 				<div transition:scale={{ duration: 300 }}>
 					<div
-						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+						class=" max-w-md max-h-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
 						use:dialog.modal
 					>
 						<h3 class="text-xl py-4 font-medium leading-6 text-gray-900">Scan To Join Room</h3>
 
-						<canvas bind:this={QRContainer} class="py-4" use:QRCode={$page.url.href} />
+						<canvas
+							bind:this={QRContainer}
+							class="w-full h-full py-4"
+							use:QRCode={$page.url.href}
+						/>
 
 						<div class="mt-4 flex justify-center items-center">
 							<button
