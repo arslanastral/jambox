@@ -1,25 +1,22 @@
 <script lang="ts">
-	import { start } from 'tone';
+	import { start, Destination } from 'tone';
 	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
-	import { activeKeys } from '$lib/stores/webrtc/room';
+	import { room, activeKeys } from '$lib/stores/webrtc/room';
 	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { clickToCopy } from '$lib/actions/copy';
-	import Modal from './common/Modal.svelte';
-	import Peers from './common/Peers.svelte';
-	import Logo from './common/Logo.svelte';
+	import Header from './common/Header.svelte';
 
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
 
-	let selectedInstrument = $allInstruments[$currentInstrument];
+	$: selectedInstrument = $allInstruments[$currentInstrument];
 
 	function setRelease(value = 50) {
+		Destination.volume.value = -10;
 		selectedInstrument.release = value;
 	}
 
@@ -51,7 +48,9 @@
 				$activeKeys = $activeKeys.filter((n) => n.note !== note);
 			}
 
-			console.log(`Note: ${data.note} , Latency: ${latency}`);
+			console.log(
+				`Note: ${data.note} , Direction: ${isPressed ? ' down' : ' up'} Latency: ${latency}`
+			);
 		});
 	}
 
@@ -116,10 +115,6 @@
 			});
 		}
 	}
-
-	function handleRoomJoin() {
-		goto('/rooms/' + crypto.randomUUID());
-	}
 </script>
 
 <svelte:window
@@ -135,56 +130,38 @@
 />
 
 <div
-	class="grid min-h-screen grid-row-1 min-w-full text-primary-9 justify-center content-around p-4"
+	class="grid h-screen grid-rows-[auto_1fr] bg-primary-9 lg:bg-inherit min-w-full overflow-hidden text-primary-9 justify-center lg:p-4"
 >
-	<div class="flex items-center justify-between">
-		<Logo />
+	<Header />
 
-		<Peers />
-
-		<div class="flex items-center gap-4">
-			{#if roomId}
-				<Modal />
-				<button
-					use:clickToCopy={{ text: $page.url.href }}
-					class="px-4 py-2 ring-2 ring-primary-4 bg-primary-3 flex items-center gap-2 rounded-full"
-				>
-					<span class="material-symbols-rounded">content_copy</span> Copy Link</button
-				>
-			{:else}
-				<button on:click={handleRoomJoin} class="px-4 py-3 bg-black text-white rounded-full"
-					>+ Create Room</button
-				>
-			{/if}
-		</div>
-	</div>
-
-	<div class="rounded-container-token relative grid-rows-1 grid bg-primary-9">
+	<div
+		class="lg:rounded-container-token max-h-[350px] h-full self-center relative grid grid-rows-[auto_1fr] bg-primary-9"
+	>
 		<div
-			class="flex items-center justify-between bg-primary-12 rounded-tl-container-token rounded-tr-container-token p-4"
+			class="flex items-center justify-between bg-primary-12 lg:rounded-tl-container-token lg:rounded-tr-container-token p-2 lg:p-4 flex-wrap"
 		>
 			<InstrumentSelect />
 
-			<div class="flex flex-col items-center gap-1">
+			<div class="flex items-center order-1">
 				<div use:dial={setRelease} />
 			</div>
 
-			<div class="flex flex-col items-start gap-1">
+			<div class="flex flex-col">
 				<div class="text-sm font-light">Octave</div>
 				<div class="flex items-center justify-center gap-2">
-					<button class="material-symbols-rounded" on:click={() => handleOctave('dec')}
+					<button class="material-symbols-rounded text-sm" on:click={() => handleOctave('dec')}
 						>do_not_disturb_on</button
 					>
 
-					<span> {octave[0]} </span>
-					<button class="material-symbols-rounded" on:click={() => handleOctave('inc')}
+					<span class="text-sm"> {octave[0]} </span>
+					<button class="material-symbols-rounded text-sm" on:click={() => handleOctave('inc')}
 						>add_circle</button
 					>
 				</div>
 			</div>
 		</div>
-		<div class="h-[300px] lg:h-[270px] overflow-x-auto md:px-5 w-full">
-			<div class="flex h-full pb-12 lg:pb-8 min-w-max touch-pan-x">
+		<div class="overflow-x-auto lg:px-5 w-full">
+			<div class="flex h-full pb-10 lg:pb-6 min-w-max scrollstrip lg:!bg-none touch-pan-x">
 				{#each octave as octave, o}
 					{#each notes as note, n}
 						<PianoKey {handleNote} note={note + octave} keybind={KEYS[o * notes.length + n]} />
@@ -196,7 +173,7 @@
 		{#if !hasAudioPermission}
 			<div
 				out:fade={{ duration: 200 }}
-				class=" bg-primaryA-8 flex items-center justify-center rounded-container-token absolute inset-0 z-30"
+				class=" bg-primaryA-8 flex items-center justify-center lg:rounded-container-token absolute inset-0 z-30"
 			>
 				<button
 					class="bg-primary-1 relative shadow-lg hover:animate-none transition-all ease-in-out duration-200 z-30 flex items-center gap-1 text-primary-12 p-3 rounded-full"
@@ -210,3 +187,14 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.scrollstrip {
+		background-image: radial-gradient(
+			circle at 10px 10px,
+			var(--color-primary-12) 1px,
+			transparent 0
+		);
+		background-size: 10px 10px;
+	}
+</style>
