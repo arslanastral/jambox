@@ -17,20 +17,21 @@
 >
 	<div class="flex flex-col xs:flex-row-reverse items-start xs:items-center gap-3">
 		{#if $peers.length === 1}
-			<div class="flex xs:flex-row-reverse items-center gap-2">
-				<span class="text-base xs:text-sm lg:text-base font-light text-primary-1 lg:text-primary-9"
-					>Finding Friends</span
+			<div class="flex xs:flex-row-reverse items-center gap-3">
+				<span
+					class="text-base xs:text-sm lg:text-base font-light text-primary-1 dark:text-primary-9 lg:text-primary-9"
+					>Waiting For Friends</span
 				>
 				<Loader />
 			</div>
 		{/if}
-		{#if $peers}
+		{#if sortedPeers}
 			<div class="flex items-center justify-evenly gap-2">
 				{#each sortedPeers as item, i}
 					<span
 						transition:scale
 						use:tooltip={item.id === selfId ? 'You' : ''}
-						class="h-10 w-10 text-xl flex justify-center items-center rounded-full bg-primary-3"
+						class="h-10 w-10 text-xl flex justify-center items-center rounded-full bg-primary-6 ring-primary-8"
 						class:ring-2={item.id === selfId}>{item.emoji}</span
 					>
 				{/each}
