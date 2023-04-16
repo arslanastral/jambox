@@ -10,9 +10,9 @@
 	$: activePeer = $activeKeys.find((k) => k.note === note);
 
 	const whiteKeyClasses =
-		'bg-primary-1 relative flex touch-none text-primary-8 select-none justify-center items-end border-b-4 border-r border-primary-5 rounded-b h-full w-12 transition-all duration-150 ease-in-out';
+		'bg-primary-1 dark:bg-primary-8 relative flex touch-none text-primary-8 select-none justify-center items-end border-b-4 border-r border-primary-5 dark:border-primary-7 rounded-b h-full w-12 transition-all duration-150 ease-in-out';
 	const blackKeyClasses =
-		'bg-primary-12 relative flex touch-none select-none justify-center items-end text-primary-6 text-xs border-b-4 border-primary-12 h-[67%] w-7 rounded-b -ml-3.5 -mr-3.5 z-10 transition-all duration-150 ease-in-out';
+		'bg-primary-12 dark:bg-primary-3 relative flex touch-none select-none justify-center items-end text-primary-6 text-xs border-b-4 border-primary-12 dark:border-primary-3 h-[67%] w-7 rounded-b -ml-3.5 -mr-3.5 z-10 transition-all duration-150 ease-in-out';
 
 	const keyClasses = note.includes('#') ? blackKeyClasses : whiteKeyClasses;
 
