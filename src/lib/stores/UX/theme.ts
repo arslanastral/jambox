@@ -4,7 +4,7 @@ import mediaQuery from '../utils/mediaQuery';
 
 export const prefersDarkMode = mediaQuery('(prefers-color-scheme:dark)');
 
-const colors = ['blue', 'cyan', 'red', 'grass', 'pink'] as const;
+export const colors = ['blue', 'cyan', 'red', 'grass', 'pink'] as const;
 
 type Theme = {
 	color: (typeof colors)[number];
