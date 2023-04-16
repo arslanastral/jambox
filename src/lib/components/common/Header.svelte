@@ -1,36 +1,32 @@
 <script>
 	import { page } from '$app/stores';
-	import { clickToCopy } from '$lib/actions/copy';
 	import ActionButton from './ActionButton.svelte';
 	import Logo from './Logo.svelte';
-	import Modal from './Modal.svelte';
+	import ShareModal from './ShareModal.svelte';
 	import Peers from './Peers.svelte';
 	import { room } from '$lib/stores/webrtc/room';
 	import { goto } from '$app/navigation';
+	import DarkModeToggle from '../UX/DarkModeToggle.svelte';
+	import Menu from './Menu.svelte';
 
 	function handleRoomJoin() {
 		goto('/rooms/' + crypto.randomUUID());
 	}
 </script>
 
-<div class="grid grid-cols-3 gap-y-5 bg-primary-9 lg:bg-inherit p-2 self-start">
+<div class="grid grid-cols-3 gap-y-5 p-2 self-start">
 	<Logo />
 	<Peers />
-	<div class="flex items-center gap-2 col-span-2 xs:col-span-1 justify-self-end">
+	<div class="flex items-center gap-1 col-span-2 xs:col-span-1 justify-self-end">
+		<DarkModeToggle />
+		<Menu />
 		{#if $page.params.id}
-			<ActionButton on:click={() => room.exit()} icon="door_back" />
-			<Modal />
-			<button
-				use:clickToCopy={{ text: $page.url.href }}
-				class="material-symbols-rounded text-primary-1 lg:text-primary-9 w-8 h-8 flex items-center justify-center rounded-full"
-			>
-				content_copy
-			</button>
+			<ShareModal />
 		{:else}
 			<button
 				on:click={handleRoomJoin}
-				class="px-4 py-3 text-sm bg-primary-11 text-white font-light rounded-full"
-				>+ New Room</button
+				class="px-4 py-2 flex items-center gap-1 text-base bg-primary-11 text-primary-5 font-light rounded-full"
+				><span class="material-symbols-rounded"> magic_button </span>Join Room</button
 			>
 		{/if}
 	</div>
