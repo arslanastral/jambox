@@ -2,8 +2,29 @@
 @import '@radix-ui/colors/blueDark.css';
 @import '@radix-ui/colors/blueA.css';
 @import '@radix-ui/colors/blueDarkA.css';
+
 @import '@radix-ui/colors/gray.css';
 @import '@radix-ui/colors/grayDark.css';
+
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/redDark.css';
+@import '@radix-ui/colors/redA.css';
+@import '@radix-ui/colors/redDarkA.css';
+
+@import '@radix-ui/colors/cyan.css';
+@import '@radix-ui/colors/cyanDark.css';
+@import '@radix-ui/colors/cyanA.css';
+@import '@radix-ui/colors/cyanDarkA.css';
+
+@import '@radix-ui/colors/pink.css';
+@import '@radix-ui/colors/pinkDark.css';
+@import '@radix-ui/colors/pinkA.css';
+@import '@radix-ui/colors/pinkDarkA.css';
+
+@import '@radix-ui/colors/grass.css';
+@import '@radix-ui/colors/grassDark.css';
+@import '@radix-ui/colors/grassA.css';
+@import '@radix-ui/colors/grassDarkA.css';
 
 @tailwind base;
 @tailwind components;
