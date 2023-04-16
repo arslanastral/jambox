@@ -1,7 +1,7 @@
 <div class="dots w-10 flex items-center gap-1 flex-nowrap">
-	<div class="rounded-full w-2 h-2 bg-primary-1 lg:bg-primary-9" />
-	<div class="rounded-full w-2 h-2 bg-primary-1 lg:bg-primary-9" />
-	<div class="rounded-full w-2 h-2 bg-primary-1 lg:bg-primary-9" />
+	<div class="rounded-full w-2 h-2 bg-primary-1 dark:bg-primary-9 lg:bg-primary-9" />
+	<div class="rounded-full w-2 h-2 bg-primary-1 dark:bg-primary-9 lg:bg-primary-9" />
+	<div class="rounded-full w-2 h-2 bg-primary-1 dark:bg-primary-9 lg:bg-primary-9" />
 </div>
 
 <style>

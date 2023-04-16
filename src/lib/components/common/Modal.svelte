@@ -33,10 +33,10 @@
 			<div class="flex min-h-full items-center justify-center p-4 text-center">
 				<div transition:scale={{ duration: 300 }}>
 					<div
-						class=" max-w-md max-h-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+						class=" max-w-md max-h-md transform overflow-hidden rounded-2xl bg-primary-1 p-6 text-left align-middle shadow-xl transition-all"
 						use:dialog.modal
 					>
-						<h3 class="text-xl py-4 font-medium leading-6 text-gray-900">Scan To Join Room</h3>
+						<h3 class="text-xl py-4 font-medium leading-6 text-primary-11">Scan To Join Room</h3>
 
 						<canvas
 							bind:this={QRContainer}
@@ -48,7 +48,7 @@
 							<button
 								on:click={downloadQRCode}
 								type="button"
-								class="flex justify-center items-center gap-2 rounded-md border border-transparent bg-primary-4 w-full px-4 py-2 text-sm font-medium text-blue-900 hover:bg-primary-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+								class="flex justify-center items-center gap-2 rounded-md border border-transparent bg-primary-4 w-full px-4 py-2 text-sm font-medium text-primary-9 hover:bg-primary-5"
 							>
 								<span class="material-symbols-rounded"> download </span> Download
 							</button>

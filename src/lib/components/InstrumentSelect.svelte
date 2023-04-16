@@ -29,7 +29,7 @@
 	<button
 		use:listbox.button
 		on:select={onSelect}
-		class="relative w-full flex items-center justify-between cursor-pointer rounded-full bg-primary-12 border-primary-11 border px-3 py-1 text-sm"
+		class="relative w-full flex items-center justify-between cursor-pointer rounded-full bg-primary-12 dark:bg-primary-2 dark:border-primary-7 border-primary-11 border px-3 py-1 text-sm"
 	>
 		<div class="flex items-center gap-2">
 			<span class="pointer-events-none material-symbols-rounded"> piano </span>
@@ -42,7 +42,7 @@
 		<div transition:fly={{ duration: 200, easing: cubicInOut, y: -10 }}>
 			<ul
 				use:listbox.items
-				class="absolute mt-1 h-44 overflow-y-auto px-1 pr-0 w-full rounded-lg bg-primary-12 border-primary-11 border py-1 text-sm"
+				class="absolute mt-1 h-44 overflow-y-auto px-1 pr-0 w-full rounded-lg bg-primary-12 dark:bg-primary-2 dark:border-primary-7 border-primary-11 border py-1 text-sm"
 			>
 				{#each instruments as value, i}
 					{@const active = $listbox.active === value}
