@@ -20,20 +20,20 @@
 		selectedInstrument.release = value;
 	}
 
-	export let sendNote: Action<NotesAction>[0];
-	export let receiveNote: Action<NotesAction>[1];
+	export let sendNote: Action<NotesAction>[0] | undefined = undefined;
+	export let receiveNote: Action<NotesAction>[1] | undefined = undefined;
 
 	function handleNote({ note, instrument, isPressed, id }: NotesAction) {
 		isPressed
 			? $allInstruments[instrument].triggerAttack(note)
 			: $allInstruments[instrument].triggerRelease(note);
 		const startTimestamp = Date.now();
-		if (roomId) {
+		if (roomId && sendNote) {
 			sendNote({ note, timestamp: startTimestamp, isPressed, instrument, id });
 		}
 	}
 
-	if (roomId) {
+	if (roomId && receiveNote) {
 		receiveNote((data, peerId) => {
 			const endTimestamp = Date.now();
 			const latency = data.timestamp ? endTimestamp - data.timestamp + 'ms' : 'unknown';
@@ -130,15 +130,15 @@
 />
 
 <div
-	class="grid h-screen grid-rows-[auto_1fr] bg-primary-9 lg:bg-inherit min-w-full overflow-hidden text-primary-9 justify-center lg:p-4"
+	class="grid h-screen grid-rows-[auto_1fr] bg-primary-9 dark:bg-primary-1 lg:bg-inherit min-w-full overflow-hidden text-primary-9 justify-center lg:p-4"
 >
 	<Header />
 
 	<div
-		class="lg:rounded-container-token max-h-[350px] h-full self-center relative grid grid-rows-[auto_1fr] bg-primary-9"
+		class="lg:rounded-container-token max-h-[350px] max-w-[1048px] justify-self-center h-full self-center relative grid grid-rows-[auto_1fr] bg-primary-9 dark:bg-primary-3"
 	>
 		<div
-			class="flex items-center justify-between bg-primary-12 lg:rounded-tl-container-token lg:rounded-tr-container-token p-2 lg:p-4 flex-wrap"
+			class="flex items-center justify-between bg-primary-12 dark:bg-primary-3 lg:rounded-tl-container-token lg:rounded-tr-container-token p-2 lg:p-4 flex-wrap"
 		>
 			<InstrumentSelect />
 
@@ -149,12 +149,12 @@
 			<div class="flex flex-col">
 				<div class="text-sm font-light">Octave</div>
 				<div class="flex items-center justify-center gap-2">
-					<button class="material-symbols-rounded text-sm" on:click={() => handleOctave('dec')}
+					<button class="material-symbols-rounded text-lg" on:click={() => handleOctave('dec')}
 						>do_not_disturb_on</button
 					>
 
 					<span class="text-sm"> {octave[0]} </span>
-					<button class="material-symbols-rounded text-sm" on:click={() => handleOctave('inc')}
+					<button class="material-symbols-rounded text-lg" on:click={() => handleOctave('inc')}
 						>add_circle</button
 					>
 				</div>
@@ -173,7 +173,7 @@
 		{#if !hasAudioPermission}
 			<div
 				out:fade={{ duration: 200 }}
-				class=" bg-primaryA-8 flex items-center justify-center lg:rounded-container-token absolute inset-0 z-30"
+				class=" bg-primaryA-7 flex items-center justify-center lg:rounded-container-token absolute inset-0 z-30"
 			>
 				<button
 					class="bg-primary-1 relative shadow-lg hover:animate-none transition-all ease-in-out duration-200 z-30 flex items-center gap-1 text-primary-12 p-3 rounded-full"
@@ -192,7 +192,7 @@
 	.scrollstrip {
 		background-image: radial-gradient(
 			circle at 10px 10px,
-			var(--color-primary-12) 1px,
+			var(--color-primary-11) 1px,
 			transparent 0
 		);
 		background-size: 10px 10px;
