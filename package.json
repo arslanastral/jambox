@@ -16,7 +16,6 @@
 	"devDependencies": {
 		"@playwright/test": "^1.32.2",
 		"@radix-ui/colors": "^0.1.8",
-		"@savvywombat/tailwindcss-grid-areas": "^3.0.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.15.2",
 		"@typescript-eslint/eslint-plugin": "^5.57.1",

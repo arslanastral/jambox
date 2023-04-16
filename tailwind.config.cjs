@@ -11,10 +11,12 @@ module.exports = {
 			screens: {
 				xs: '568px'
 			},
-			gridTemplateAreas: {},
-			gridTemplateColumns: {},
-			gridTemplateRows: {}
+
+			gridTemplateRows: {
+				share: 'auto minmax(auto, 1fr) auto',
+				qr: 'minmax(0, 1fr) auto'
+			}
 		}
 	},
-	plugins: [require('@savvywombat/tailwindcss-grid-areas'), require('./src/lib/tailwind/core.cjs')]
+	plugins: [require('./src/lib/tailwind/core.cjs')]
 };
