@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { allInstruments } from '$lib/stores/tonejs/instruments';
+	import { allInstruments, type InstrumentName } from '$lib/stores/tonejs/instruments';
 	import { instrumentConfig } from '$lib/stores/tonejs/instrumentsConfig';
 	import { createListbox } from 'svelte-headlessui';
 	import { scale, fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
+	import { room, type Action } from '$lib/stores/webrtc/room';
+	import { page } from '$app/stores';
 
 	const instruments = instrumentConfig
 		.map((i) => ({ name: i.name }))
@@ -20,6 +22,11 @@
 			allInstruments.selected.set(instrumentName);
 		} else {
 			allInstruments.add(instrumentName);
+
+			if ($page.params.id) {
+				const [sendInstrument] = room.actions.instrument as Action<InstrumentName>;
+				sendInstrument(instrumentName);
+			}
 			allInstruments.selected.set(instrumentName);
 		}
 	}

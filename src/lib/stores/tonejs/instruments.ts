@@ -54,10 +54,11 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 		}).toDestination();
 	}
 
+	const samplerInstruments: SamplerInstruments<T> = {} as SamplerInstruments<T>;
+
 	return {
 		subscribe,
 		load: (instrumentNames?: InstrumentName[]) => {
-			const samplerInstruments: SamplerInstruments<T> = {} as SamplerInstruments<T>;
 			if (instrumentNames?.length) {
 				for (const name of Array.from(new Set(instrumentNames))) {
 					const instrumentConfig = options.instrumentsConfig.find((i) => i.name === name);
@@ -76,7 +77,7 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 				currentInstrument.set(instrumentNames[0]);
 			}
 		},
-		add: (instrumentName?: InstrumentName) => {
+		add: (instrumentName: InstrumentName) => {
 			const instrumentConfig = options.instrumentsConfig.find((i) => i.name === instrumentName);
 
 			if (instrumentConfig) {

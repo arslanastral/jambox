@@ -5,12 +5,11 @@
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
-	import { room, activeKeys } from '$lib/stores/webrtc/room';
+	import { room, activeKeys, selfId } from '$lib/stores/webrtc/room';
 	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
 	import { page } from '$app/stores';
 	import Header from './common/Header.svelte';
 	import { midiInputs, selectedMidiInput } from '$lib/stores/midi';
-	import { selfId } from 'trystero';
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
 

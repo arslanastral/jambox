@@ -1,6 +1,7 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { joinRoom, selfId } from 'trystero';
 import { PUBLIC_APPID } from '$env/static/public';
+import { allInstruments } from '$lib/stores/tonejs/instruments';
 import type { InstrumentName } from '$lib/stores/tonejs/instruments';
 import type { Room, ActionSender, ActionReceiver, ActionProgress } from 'trystero';
 import { pick } from 'nexusui';
@@ -75,6 +76,9 @@ function createRoom(appId: string) {
 
 			const [sendProfile, receiveProfile] = actions.profile as Action<PeerProfile>;
 			const [sendError, receiveError] = actions.error as Action<PeerError>;
+			const [sendInstrument, receiveInstrument] = actions.instrument as Action<
+				InstrumentName | InstrumentName[]
+			>;
 
 			const randomEmoji = pick(...emojis);
 
@@ -87,6 +91,7 @@ function createRoom(appId: string) {
 
 			room.onPeerJoin((peerId) => {
 				sendProfile(selfProfile, peerId);
+				sendInstrument(Object.keys(get(allInstruments)) as InstrumentName[]);
 			});
 
 			receiveProfile((data, peerId) => {
@@ -125,6 +130,14 @@ function createRoom(appId: string) {
 				}
 			});
 
+			receiveInstrument((name) => {
+				if (Array.isArray(name)) {
+					name.forEach((n) => allInstruments.add(n));
+				} else {
+					allInstruments.add(name);
+				}
+			});
+
 			room.onPeerLeave((peerId) => {
 				updatePeers((p) => {
 					const filtered = p.filter((p) => p.id !== peerId);
@@ -153,3 +166,4 @@ export const room = createRoom(PUBLIC_APPID);
 export const peers = room.peers;
 export const activeKeys = writable<ActiveNote[]>([]);
 export { selfId };
+export { ActionSender, ActionReceiver };

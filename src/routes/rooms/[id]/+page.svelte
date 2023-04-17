@@ -4,7 +4,7 @@
 	import { room } from '$lib/stores/webrtc/room';
 	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
 
-	room.join({ roomId: $page.params.id, roomActions: ['notes', 'profile', 'error'] });
+	room.join({ roomId: $page.params.id, roomActions: ['notes', 'profile', 'error', 'instrument'] });
 	const [sendNote, receiveNote] = room.actions.notes as Action<NotesAction>;
 </script>
 
