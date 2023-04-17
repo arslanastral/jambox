@@ -5,8 +5,8 @@
 	import Switch from './common/Switch.svelte';
 	import { theme } from '$lib/stores/UX/theme';
 	import { showKeybinds, showNoteNames } from '$lib/stores/UX/piano';
+	import MidiSelect from './MidiSelect.svelte';
 	const dialog = createDialog({ label: 'Settings' });
-
 	let isDark = false;
 </script>
 
@@ -68,6 +68,11 @@
 						</button>
 					{/each}
 				</div>
+
+				<div class="flex items-center gap-2">
+					<span class="material-symbols-rounded">cable</span>Midi Device
+				</div>
+				<MidiSelect />
 			</div>
 		</div>
 	</div>

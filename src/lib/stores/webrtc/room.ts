@@ -15,7 +15,8 @@ type PeerProfile = {
 };
 
 export type NotesAction = {
-	note: string;
+	note: string | number;
+	velocity?: number;
 	timestamp?: number;
 	instrument: InstrumentName;
 	isPressed: boolean;
@@ -23,8 +24,8 @@ export type NotesAction = {
 };
 
 type ActiveNote = {
-	note: string;
-	id: NotesAction['id'];
+	note: string | number;
+	id?: NotesAction['id'];
 };
 
 type PeerError = EmojiError;

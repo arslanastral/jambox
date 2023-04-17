@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { start, Destination } from 'tone';
+	import { start, Destination, Midi } from 'tone';
 	import { allInstruments, currentInstrument } from '$lib/stores/tonejs/instruments';
 	import PianoKey from './PianoKey.svelte';
 	import InstrumentSelect from './InstrumentSelect.svelte';
@@ -9,29 +9,85 @@
 	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
 	import { page } from '$app/stores';
 	import Header from './common/Header.svelte';
-
+	import { midiInputs, selectedMidiInput } from '$lib/stores/midi';
+	import { selfId } from 'trystero';
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
 
 	$: selectedInstrument = $allInstruments[$currentInstrument];
+
+	export let sendNote: Action<NotesAction>[0] | undefined = undefined;
+	export let receiveNote: Action<NotesAction>[1] | undefined = undefined;
+
+	function handleNote({ note, instrument, isPressed, id, velocity }: NotesAction) {
+		if (isPressed) {
+			$allInstruments[instrument].triggerAttack(note, undefined, velocity);
+			$activeKeys = [...$activeKeys, { note, id }];
+		} else {
+			$allInstruments[instrument].triggerRelease(note);
+			$activeKeys = $activeKeys.filter((n) => n.note !== note);
+		}
+
+		const startTimestamp = Date.now();
+		if (roomId && sendNote) {
+			sendNote({ note, timestamp: startTimestamp, isPressed, instrument, id });
+		}
+	}
 
 	function setRelease(value = 50) {
 		Destination.volume.value = -10;
 		selectedInstrument.release = value;
 	}
 
-	export let sendNote: Action<NotesAction>[0] | undefined = undefined;
-	export let receiveNote: Action<NotesAction>[1] | undefined = undefined;
+	navigator
+		.requestMIDIAccess()
+		.then((midiAccess) => {
+			const inputs = midiAccess.inputs.values();
 
-	function handleNote({ note, instrument, isPressed, id }: NotesAction) {
-		isPressed
-			? $allInstruments[instrument].triggerAttack(note)
-			: $allInstruments[instrument].triggerRelease(note);
-		const startTimestamp = Date.now();
-		if (roomId && sendNote) {
-			sendNote({ note, timestamp: startTimestamp, isPressed, instrument, id });
-		}
-	}
+			for (let input of inputs) {
+				$midiInputs?.push(input);
+			}
+			$selectedMidiInput = $midiInputs[0];
+
+			if ($selectedMidiInput) {
+				$selectedMidiInput.onmidimessage = ((e: MIDIMessageEvent) => {
+					const [status, note, velocity] = e.data;
+					console.log('Received MIDI message:', status, note, velocity);
+
+					const toneVelocity = velocity / 127;
+					if (status === 0x90 || status === 0x9f) {
+						// note on
+						handleNote({
+							note: Midi(note).toNote(),
+							velocity: toneVelocity,
+							id: selfId,
+							instrument: $currentInstrument,
+							isPressed: true
+						});
+					} else if (status === 0x80 || status === 0x8f) {
+						// note off
+						handleNote({
+							note: Midi(note).toNote(),
+							id: selfId,
+							instrument: $currentInstrument,
+							isPressed: false
+						});
+					}
+				}) as (this: MIDIInput, ev: Event) => any;
+
+				$selectedMidiInput.onstatechange = (e) => {
+					console.log(e);
+					const port = e.target as MIDIInput;
+					console.log(`MIDI input ${port.name} state changed: ${port.state}`);
+					if (port.state === 'disconnected') {
+						console.log('Disconnected');
+					}
+				};
+			}
+		})
+		.catch((error) => {
+			console.log('Failed to get MIDI access', error);
+		});
 
 	if (roomId && receiveNote) {
 		receiveNote((data, peerId) => {
