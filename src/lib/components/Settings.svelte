@@ -6,11 +6,13 @@
 	import { theme } from '$lib/stores/UX/theme';
 	import { showKeybinds, showNoteNames } from '$lib/stores/UX/piano';
 	import MidiSelect from './MidiSelect.svelte';
+	import { tooltip } from '$lib/actions/tooltip';
+
 	const dialog = createDialog({ label: 'Settings' });
-	let isDark = false;
 </script>
 
 <button
+	use:tooltip={'Settings'}
 	class="material-symbols-rounded w-10 h-10 text-primary-1 dark:text-primary-9 lg:text-primary-9 font-light flex items-center justify-center rounded-full"
 	on:click={dialog.open}
 >

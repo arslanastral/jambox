@@ -10,6 +10,8 @@
 	import { page } from '$app/stores';
 	import Header from './common/Header.svelte';
 	import { midiInputs, selectedMidiInput } from '$lib/stores/midi';
+	import { tooltip } from '$lib/actions/tooltip';
+
 	let hasAudioPermission = false;
 	let roomId = $page.params.id;
 
@@ -213,20 +215,24 @@
 		>
 			<InstrumentSelect />
 
-			<div class="flex items-center order-1">
+			<div use:tooltip={'Release'} class="flex items-center order-1">
 				<div use:dial={setRelease} />
 			</div>
 
 			<div class="flex flex-col">
 				<div class="text-sm font-light">Octave</div>
 				<div class="flex items-center justify-center gap-2">
-					<button class="material-symbols-rounded text-lg" on:click={() => handleOctave('dec')}
-						>do_not_disturb_on</button
+					<button
+						use:tooltip={'Decrease Octave'}
+						class="material-symbols-rounded text-lg"
+						on:click={() => handleOctave('dec')}>do_not_disturb_on</button
 					>
 
 					<span class="text-sm"> {octave[0]} </span>
-					<button class="material-symbols-rounded text-lg" on:click={() => handleOctave('inc')}
-						>add_circle</button
+					<button
+						use:tooltip={'Increase Octave'}
+						class="material-symbols-rounded text-lg"
+						on:click={() => handleOctave('inc')}>add_circle</button
 					>
 				</div>
 			</div>
@@ -244,7 +250,7 @@
 		{#if !hasAudioPermission}
 			<div
 				out:fade={{ duration: 200 }}
-				class=" bg-primaryA-7 flex items-center justify-center lg:rounded-container-token absolute inset-0 z-30"
+				class=" bg-primaryA-8 flex items-center justify-center lg:rounded-container-token absolute inset-0 z-30"
 			>
 				<button
 					class="bg-primary-1 relative shadow-lg hover:animate-none transition-all ease-in-out duration-200 z-30 flex items-center gap-1 text-primary-12 p-3 rounded-full"
