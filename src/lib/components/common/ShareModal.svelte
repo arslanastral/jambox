@@ -38,7 +38,7 @@
 	<div class="fixed flex items-center justify-center inset-0 z-50 overflow-y-auto">
 		<div
 			transition:scale={{ duration: 300 }}
-			class="grid grid-rows-share gap-6 content-center max-w-md max-h-[80vh] rounded-2xl bg-primary-1 p-6 shadow-xl"
+			class="grid grid-rows-share gap-6 content-center max-w-md max-h-[80vh] rounded-container-token bg-primary-1 p-6 shadow-xl"
 			use:dialog.modal
 		>
 			<h3 class="text-xl leading-6 text-primary-12">Share This Room</h3>
