@@ -52,7 +52,6 @@
 			if ($selectedMidiInput) {
 				$selectedMidiInput.onmidimessage = ((e: MIDIMessageEvent) => {
 					const [status, note, velocity] = e.data;
-					console.log('Received MIDI message:', status, note, velocity);
 
 					const toneVelocity = velocity / 127;
 					if (status === 0x90 || status === 0x9f) {
@@ -80,7 +79,24 @@
 					const port = e.target as MIDIInput;
 					console.log(`MIDI input ${port.name} state changed: ${port.state}`);
 					if (port.state === 'disconnected') {
-						console.log('Disconnected');
+						$midiInputs = $midiInputs.filter(({ name }) => {
+							if (port.name) {
+								name !== port.name || !name?.includes(port.name);
+							}
+						});
+
+						if ($selectedMidiInput?.name === port.name) {
+							$selectedMidiInput = null;
+						}
+					}
+
+					if (port.state === 'connected') {
+						const exists = $midiInputs.find((m) => m.name === port.name);
+
+						if (exists?.name !== port.name) {
+							$midiInputs.push(port);
+							$selectedMidiInput = port;
+						}
 					}
 				};
 			}
