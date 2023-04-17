@@ -266,6 +266,17 @@
 		{/if}
 	</div>
 </div>
+<span
+	class="fixed hidden md:flex items-center gap-2 text-base bottom-0 left-1/2 p-4 -translate-x-1/2 text-primary-8"
+	><span class="material-symbols-rounded"> auto_fix_high </span><span class="w-max"
+		>Crafted by <a
+			class="hover:text-primary-9"
+			target="_blank"
+			rel="noopener noreferrer"
+			href="https://github.com/arslanastral">Arslan</a
+		>
+	</span></span
+>
 
 <style>
 	.scrollstrip {
