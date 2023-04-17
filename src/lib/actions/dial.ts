@@ -13,7 +13,7 @@ export function dial(
 	onChange();
 	const dial = new Nexus.Dial(node, options);
 
-	dial.colorize('accent', 'var(--color-primary-9)');
+	dial.colorize('accent', 'var(--color-primary-11)');
 	dial.colorize('fill', 'var(--color-primary-6)');
 
 	dial.on('change', (value: number) => {
