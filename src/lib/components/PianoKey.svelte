@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { showKeybinds, showNoteNames } from '$lib/stores/UX/piano';
 	import { currentInstrument } from '$lib/stores/tonejs/instruments';
 	import { peers, activeKeys, selfId } from '$lib/stores/webrtc/room';
 	import type { NotesAction } from '$lib/stores/webrtc/room';
@@ -66,6 +67,19 @@
 	}}
 	class="{keyClasses} {activeClasses}"
 >
+	<span class="flex flex-col">
+		{#if $showKeybinds}
+			<span class="text-sm text-primary-7">
+				{keybind}
+			</span>
+		{/if}
+
+		{#if $showNoteNames}
+			<span class="text-[11px]">
+				{note}
+			</span>
+		{/if}
+	</span>
 	{#if active && selfEmoji}
 		<span
 			class="h-10 w-10 absolute -bottom-4 text-xl flex justify-center items-center ring-2 ring-primary-5 rounded-full bg-primary-4"
