@@ -35,7 +35,6 @@
 
 <div class="relative w-44 z-20">
 	<button
-		use:tooltip={'Select Instrument'}
 		use:listbox.button
 		on:select={onSelect}
 		class="relative w-full flex items-center justify-between cursor-pointer rounded-full bg-primary-12 dark:bg-primary-2 dark:border-primary-7 border-primary-11 border px-3 py-1 text-sm"

@@ -24,7 +24,7 @@
 	<button
 		use:listbox.button
 		on:select={onSelect}
-		class="relative w-full flex items-center justify-between cursor-pointer rounded-full bg-primary-3 dark:border-primary-7 border-primary-11 border px-3 py-1 text-sm"
+		class="relative w-full flex truncate items-center justify-between cursor-pointer rounded-full bg-primary-3 dark:border-primary-7 border-primary-11 border px-3 py-1 text-sm"
 	>
 		<div class="flex items-center gap-2">
 			<span class="pointer-events-none material-symbols-rounded"> input </span>

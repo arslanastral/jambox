@@ -215,25 +215,27 @@
 		>
 			<InstrumentSelect />
 
-			<div use:tooltip={'Release'} class="flex items-center order-1">
-				<div use:dial={setRelease} />
-			</div>
+			<div class="flex items-center gap-5">
+				<div use:tooltip={'Release'} class="flex items-center order-1">
+					<div use:dial={setRelease} />
+				</div>
 
-			<div class="flex flex-col">
-				<div class="text-sm font-light">Octave</div>
-				<div class="flex items-center justify-center gap-2">
-					<button
-						use:tooltip={'Decrease Octave'}
-						class="material-symbols-rounded text-lg"
-						on:click={() => handleOctave('dec')}>do_not_disturb_on</button
-					>
+				<div class="flex flex-col">
+					<div class="text-sm font-light">Octave</div>
+					<div class="flex items-center justify-center gap-2">
+						<button
+							use:tooltip={'Decrease Octave'}
+							class="material-symbols-rounded text-lg"
+							on:click={() => handleOctave('dec')}>do_not_disturb_on</button
+						>
 
-					<span class="text-sm"> {octave[0]} </span>
-					<button
-						use:tooltip={'Increase Octave'}
-						class="material-symbols-rounded text-lg"
-						on:click={() => handleOctave('inc')}>add_circle</button
-					>
+						<span class="text-sm"> {octave[0]} </span>
+						<button
+							use:tooltip={'Increase Octave'}
+							class="material-symbols-rounded text-lg"
+							on:click={() => handleOctave('inc')}>add_circle</button
+						>
+					</div>
 				</div>
 			</div>
 		</div>
