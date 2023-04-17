@@ -35,8 +35,7 @@
 		}
 	}
 
-	function setRelease(value = 50) {
-		Destination.volume.value = -10;
+	function setRelease(value = 1) {
 		selectedInstrument.release = value;
 	}
 
@@ -129,6 +128,7 @@
 
 	function handleAudioPermissions() {
 		start();
+		Destination.volume.value = -10;
 		hasAudioPermission = true;
 	}
 

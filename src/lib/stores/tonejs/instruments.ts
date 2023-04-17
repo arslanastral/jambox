@@ -50,7 +50,8 @@ function createInstruments<T extends string>(options: SamplerInstrumentsOptions<
 				console.log(`${name} Loaded`);
 
 				onload?.();
-			}
+			},
+			release: 1
 		}).toDestination();
 	}
 

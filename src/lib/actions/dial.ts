@@ -7,7 +7,7 @@ export function dial(
 		size: [40, 40],
 		min: 1,
 		max: 100,
-		value: 50
+		value: 1
 	}
 ) {
 	onChange();
