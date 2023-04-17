@@ -13,8 +13,7 @@ module.exports = {
 			},
 
 			gridTemplateRows: {
-				share: 'auto minmax(auto, 1fr) auto',
-				qr: 'minmax(0, 1fr) auto'
+				share: 'auto minmax(auto, 1fr) auto'
 			}
 		}
 	},

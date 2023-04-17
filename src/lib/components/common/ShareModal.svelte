@@ -43,34 +43,32 @@
 		>
 			<h3 class="text-xl leading-6 text-primary-12">Share This Room</h3>
 
-			<div class="grid grid-rows-qr row-span-2 gap-4">
-				<canvas
-					class="aspect-auto max-h-full min-h-[90px] max-w-full justify-self-center"
-					use:QRCode={$page.url.href}
-				/>
+			<canvas
+				class="aspect-auto max-h-full min-h-[90px] max-w-full justify-self-center"
+				use:QRCode={$page.url.href}
+			/>
 
-				<div class="flex items-center gap-4">
-					<button
-						use:clickToCopy={{ text: $page.url.href }}
-						on:copysuccess={handleCopied}
-						type="button"
-						class="flex justify-center items-center gap-2 rounded-full border border-transparent bg-primary-4 w-full px-4 py-2 text-sm font-medium text-primary-9 hover:bg-primary-5"
+			<div class="flex items-center gap-4">
+				<button
+					use:clickToCopy={{ text: $page.url.href }}
+					on:copysuccess={handleCopied}
+					type="button"
+					class="flex justify-center items-center gap-2 rounded-full border border-transparent bg-primary-4 w-full px-4 py-2 text-sm font-medium text-primary-9 hover:bg-primary-5"
+				>
+					<span class="material-symbols-rounded"> {copied ? 'check' : 'link'} </span>
+					{copied ? 'Copied' : 'Copy Link'}
+				</button>
+
+				<div class="flex items-center gap-2">
+					<a
+						class="inline-block w-10 h-10"
+						href="whatsapp://send/?text={shareText}%20{$page.url.href}"><WhatsAppIcon /></a
 					>
-						<span class="material-symbols-rounded"> {copied ? 'check' : 'link'} </span>
-						{copied ? 'Copied' : 'Copy Link'}
-					</button>
 
-					<div class="flex items-center gap-2">
-						<a
-							class="inline-block w-10 h-10"
-							href="whatsapp://send/?text={shareText}%20{$page.url.href}"><WhatsAppIcon /></a
-						>
-
-						<a
-							class="inline-block w-10 h-10"
-							href="tg://msg_url?url={$page.url.href}&text={shareText}"><TelegramIcon /></a
-						>
-					</div>
+					<a
+						class="inline-block w-10 h-10"
+						href="tg://msg_url?url={$page.url.href}&text={shareText}"><TelegramIcon /></a
+					>
 				</div>
 			</div>
 		</div>
