@@ -48,13 +48,14 @@
 		{#if sortedPeers}
 			<div class="flex items-center justify-evenly gap-3">
 				{#each sortedPeers as item, i (item.id)}
+					{@const isSelf = item.id === selfId}
 					<span
 						in:enter={{ key: item.id }}
 						out:leave={{ key: item.id }}
 						animate:flip
-						use:tooltip={item.id === selfId ? 'You' : ''}
+						use:tooltip={isSelf ? 'You' : ''}
 						class="h-10 w-10 text-xl flex justify-center items-center rounded-full bg-primary-4 ring-2 ring-primary-5"
-						class:!ring-primary-8={item.id === selfId}>{item.emoji}</span
+						class:!ring-primary-8={isSelf}>{item.emoji}</span
 					>
 				{/each}
 			</div>
