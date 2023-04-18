@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { allInstruments } from '$lib/stores/tonejs/instruments';
-	import { instrumentConfig } from '$lib/stores/tonejs/instrumentsConfig';
 	import { createListbox } from 'svelte-headlessui';
-	import { scale, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 	import { midiInputs, selectedMidiInput } from '$lib/stores/midi';
 

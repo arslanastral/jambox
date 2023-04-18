@@ -2,10 +2,9 @@
 	import { allInstruments, type InstrumentName } from '$lib/stores/tonejs/instruments';
 	import { instrumentConfig } from '$lib/stores/tonejs/instrumentsConfig';
 	import { createListbox } from 'svelte-headlessui';
-	import { scale, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
 	import { room, type Action } from '$lib/stores/webrtc/room';
-	import { tooltip } from '$lib/actions/tooltip';
 	import { page } from '$app/stores';
 
 	const instruments = instrumentConfig

@@ -5,7 +5,7 @@
 	import InstrumentSelect from './InstrumentSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import { dial } from '$lib/actions/dial';
-	import { room, activeKeys, selfId } from '$lib/stores/webrtc/room';
+	import { activeKeys, selfId } from '$lib/stores/webrtc/room';
 	import type { Action, NotesAction } from '$lib/stores/webrtc/room';
 	import { page } from '$app/stores';
 	import Header from './common/Header.svelte';
@@ -75,7 +75,6 @@
 				}) as (this: MIDIInput, ev: Event) => any;
 
 				$selectedMidiInput.onstatechange = (e) => {
-					console.log(e);
 					const port = e.target as MIDIInput;
 					console.log(`MIDI input ${port.name} state changed: ${port.state}`);
 					if (port.state === 'disconnected') {
@@ -107,9 +106,6 @@
 
 	if (roomId && receiveNote) {
 		receiveNote((data, peerId) => {
-			const endTimestamp = Date.now();
-			const latency = data.timestamp ? endTimestamp - data.timestamp + 'ms' : 'unknown';
-
 			const { isPressed, note, instrument, id } = data;
 
 			if (isPressed) {
@@ -119,10 +115,6 @@
 				$allInstruments[instrument].triggerRelease(note);
 				$activeKeys = $activeKeys.filter((n) => n.note !== note);
 			}
-
-			console.log(
-				`Note: ${data.note} , Direction: ${isPressed ? ' down' : ' up'} Latency: ${latency}`
-			);
 		});
 	}
 
